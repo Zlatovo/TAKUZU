@@ -357,94 +357,110 @@ bool remplire_au_hazard(int t[TAILLEL][TAILLEL], int conte, int tab[TAILLEL], in
     }
     return false;
 }
-
-
-void recurence_cree_tableau_AI(int t[TAILLEL][TAILLEL], int conte, int pose, int tab_t[TAILLEL*TAILLEL][TAILLEL][TAILLEL], int tab_n[TAILLEL*TAILLEL], int ch, int tab_parfait[TAILLEL*TAILLEL][TAILLEL][TAILLEL]){
-    if (conte<2000 && tableau_plain(t) && pose<TAILLEL*TAILLEL){
-        printf("/%d/, /%d/\n", tab_n[pose-1], pose);        afficher_tableau(t);
-        conte++;
-        int i = 0;
-        while (tableau_plain(t) && i < TAILLEL * TAILLEL) {
-            fin_tableau(t);
-            double_triple_tableau(t);
-            comparer_ligne_colone(t);
+bool comparer_tableau(int tab_parfait[TAILLEL][TAILLEL], int t[TAILLEL][TAILLEL]){
+    bool passe = false;
+    int i = 0, j =0;
+    while (i<TAILLEL && passe == false){
+        if (tab_parfait[i][j] != t[i][j]){
+            passe = true;
+        }
+        j++;
+        if (j == TAILLEL){
             i++;
+            j = 0;
         }
-        if (false == tableau_plain(t) && false == valider_un_coup(t)){
-            printf("++++++++++++++++++++++\n");
-            pose--;
-            for (int k = 0; k<TAILLEL; k++){
-                for (int l = 0; l<TAILLEL; l++){
-                    t[k][l] = tab_t[pose][k][l];
-                }
-            }
-            int x,y;
-            x = tab_n[pose] / TAILLEL;
-            y = tab_n[pose] - (x*TAILLEL);
-            printf("%d // %d;%d\n", t[x][y], x, y);
-            t[x][y] = 0;
-            if (false == valider_un_coup(t)){
-                t[x][y] = -1;
-            }
+    }
+    return passe;
+}
 
-        } else {
-            for (int k = 0; k<TAILLEL; k++){
-                for (int l = 0; l<TAILLEL; l++){
-                    tab_t[pose][k][l] = t[k][l];
-                }
+
+void recurence_cree_tableau_AI(int t[TAILLEL][TAILLEL], int conte, int pose, int tab_t[TAILLEL*TAILLEL][TAILLEL][TAILLEL], int tab_n[TAILLEL*TAILLEL], int *ch, int tab_parfait[TAILLEL*TAILLEL][TAILLEL][TAILLEL]){
+    if (tab_n[0] != 36) {
+        if (conte < 2000 && tableau_plain(t) && pose < TAILLEL * TAILLEL) {
+            conte++;
+            int i = 0;
+            while (tableau_plain(t) && i < TAILLEL * TAILLEL) {
+                fin_tableau(t);
+                double_triple_tableau(t);
+                comparer_ligne_colone(t);
+                i++;
             }
-        }
-        if (tableau_plain(t)){
-            bool a = remplire_au_hazard(t, tab_n[pose], tab_n, pose);
-            if (a == true){
-                pose++;
-                recurence_cree_tableau_AI(t, conte, pose, tab_t,tab_n, ch, tab_parfait);
-            } else {
+            if (false == tableau_plain(t) && false == valider_un_coup(t)) {
                 pose--;
-                for (int k = 0; k<TAILLEL; k++){
-                    for (int l = 0; l<TAILLEL; l++){
+                for (int k = 0; k < TAILLEL; k++) {
+                    for (int l = 0; l < TAILLEL; l++) {
                         t[k][l] = tab_t[pose][k][l];
                     }
                 }
-                int x,y;
-                x = tab_n[pose] / TAILLEL;
-                y = conte - (x*TAILLEL);
+                int x, y;
+                x = (tab_n[pose] - 1) / TAILLEL;
+                y = (tab_n[pose] - 1) - (x * TAILLEL);
                 t[x][y] = 0;
-                if (false == valider_un_coup(t)){
+                if (false == valider_un_coup(t)) {
                     t[x][y] = -1;
                 }
-                recurence_cree_tableau_AI(t, conte, pose, tab_t,tab_n, ch, tab_parfait);
-            }
-        }
-    }
-    if (tableau_plain(t) == false){
-        afficher_tableau(t);
-        printf("\n");
-        for (int k = 0; k<TAILLEL; k++){
-            for (int l = 0; l<TAILLEL; l++){
-                tab_parfait[ch][k][l] = t[k][l];
-            }
-        }
-        ch ++;
-        if (tab_n[0] != 36){
-            pose--;
-            for (int k = 0; k<TAILLEL; k++){
-                for (int l = 0; l<TAILLEL; l++){
-                    t[k][l] = tab_t[pose][k][l];
+            } else {
+                for (int k = 0; k < TAILLEL; k++) {
+                    for (int l = 0; l < TAILLEL; l++) {
+                        tab_t[pose][k][l] = t[k][l];
+                    }
                 }
             }
-            int x,y;
-            x = tab_n[pose] / TAILLEL;
-            y = conte - (x*TAILLEL);
-            t[x][y] = 0;
-            if (false == valider_un_coup(t)){
-                t[x][y] = -1;
+            if (tableau_plain(t)) {
+                bool a = remplire_au_hazard(t, tab_n[pose], tab_n, pose);
+                if (a == true) {
+                    pose++;
+                    recurence_cree_tableau_AI(t, conte, pose, tab_t, tab_n, ch, tab_parfait);
+                } else {
+                    pose--;
+                    for (int k = 0; k < TAILLEL; k++) {
+                        for (int l = 0; l < TAILLEL; l++) {
+                            t[k][l] = tab_t[pose][k][l];
+                        }
+                    }
+                    int x, y;
+                    x = (tab_n[pose] - 1) / TAILLEL;
+                    y = (tab_n[pose] - 1) - (x * TAILLEL);
+                    t[x][y] = 0;
+                    if (false == valider_un_coup(t)) {
+                        t[x][y] = -1;
+                    }
+                    recurence_cree_tableau_AI(t, conte, pose, tab_t, tab_n, ch, tab_parfait);
+                }
             }
-            printf("33333333333333333333333333333333333333333\n");
-            afficher_tableau(t);
-            printf("33333333333333333333333333333333333333333\n");
-            printf("%d, %d\n", conte, tab_n[pose]);
-            recurence_cree_tableau_AI(t, conte, pose, tab_t,tab_n, ch, tab_parfait);
+        }
+        if (tableau_plain(t) == false && tab_n[0] != 36) {
+            int q = 0;
+            bool passe = true;
+            while (q<*ch && passe == true && *ch != 0){
+                passe = comparer_tableau(tab_parfait[*ch-1], t);
+                q++;
+            }
+            if (passe) {
+                for (int k = 0; k < TAILLEL; k++) {
+                    for (int l = 0; l < TAILLEL; l++) {
+                        tab_parfait[*ch][k][l] = t[k][l];
+                    }
+                }
+                *ch = *ch + 1;
+            }
+
+            if (tab_n[1] != 36) {
+                pose--;
+                for (int k = 0; k < TAILLEL; k++) {
+                    for (int l = 0; l < TAILLEL; l++) {
+                        t[k][l] = tab_t[pose][k][l];
+                    }
+                }
+                int x, y;
+                x = (tab_n[pose] - 1) / TAILLEL;
+                y = (tab_n[pose] - 1) - (x * TAILLEL);
+                t[x][y] = 0;
+                if (false == valider_un_coup(t)) {
+                    t[x][y] = -1;
+                }
+                recurence_cree_tableau_AI(t, conte, pose, tab_t, tab_n, ch, tab_parfait);
+            }
         }
     }
 }

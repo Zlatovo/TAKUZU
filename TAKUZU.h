@@ -39,7 +39,8 @@ void identique(int t[TAILLEL][TAILLEL]);
 bool remplire_au_hazard(int t[TAILLEL][TAILLEL],int conte, int tab[TAILLEL], int pose);
 bool recurence_verifier_tableau(int t[TAILLEL][TAILLEL], int conte, int tab[TAILLEL], int pose);
 //partie II
-void recurence_cree_tableau_AI(int t[TAILLEL][TAILLEL], int conte, int pose, int tab_t[TAILLEL*TAILLEL][TAILLEL][TAILLEL], int tab_n[TAILLEL*TAILLEL], int ch, int tab_parfait[TAILLEL*TAILLEL][TAILLEL][TAILLEL]);
+bool comparer_tableau(int tab_parfait[TAILLEL][TAILLEL], int t[TAILLEL][TAILLEL]);
+void recurence_cree_tableau_AI(int t[TAILLEL][TAILLEL], int conte, int pose, int tab_t[TAILLEL*TAILLEL][TAILLEL][TAILLEL], int tab_n[TAILLEL*TAILLEL], int *ch, int tab_parfait[TAILLEL*TAILLEL][TAILLEL][TAILLEL]);
 //partie III
 
 #endif //TAKUZU_TAKUZU_H

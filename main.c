@@ -2,32 +2,32 @@
 
 int main() {
 
-    int tab[TAILLE][TAILLE] = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
-/*
-    int matrice[TAILLEL][TAILLEL];
-    creer_tableau_vierge(&matrice[TAILLEL][TAILLEL], TAILLEL);
-
-    for (int i = 0; i < TAILLEL; ++i) {
-        for (int j = 0; j < TAILLEL; ++j) {
-            printf("%d ", matrice[i][j]);
-        }
-    }*/
-
-    for (int i = 0; i < TAILLE; ++i) {
-        for (int j = 0; j < TAILLE; ++j) {
-            printf("%d ", tab[i][j]);
-        }
-        printf("\n");
-    }
-
-    saisir_valeurs(&tab);
-
-    for (int i = 0; i < TAILLE; ++i) {
-        for (int j = 0; j < TAILLE; ++j) {
-            printf("%d ", tab[i][j]);
-        }
-        printf("\n");
-    }
+    //int tab[TAILLE][TAILLE] = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
+/*  //
+    //int matrice[TAILLEL][TAILLEL];
+    //creer_tableau_vierge(&matrice[TAILLEL][TAILLEL], TAILLEL);
+    //
+    //for (int i = 0; i < TAILLEL; ++i) {
+    //    for (int j = 0; j < TAILLEL; ++j) {
+    //        printf("%d ", matrice[i][j]);
+    //    }
+    //}*/
+    //
+    //for (int i = 0; i < TAILLE; ++i) {
+    //    for (int j = 0; j < TAILLE; ++j) {
+    //        printf("%d ", tab[i][j]);
+    //    }
+    //    printf("\n");
+    //}
+    //
+    //saisir_valeurs(&tab);
+    //
+    //for (int i = 0; i < TAILLE; ++i) {
+    //    for (int j = 0; j < TAILLE; ++j) {
+    //        printf("%d ", tab[i][j]);
+    //    }
+    //    printf("\n");
+    //}
 // Adrien
     //int t[TAILLEL][TAILLEL] = { {1,-1,-1,-1}, {-1,-1,1,-1}, {0,-1,1,0}, {-1,1,-1,-1} };
     // int t[TAILLEL][TAILLEL] = { {-1,0,0,-1,0,-1,-1,1}, {-1,-1,-1,-1,0,0,-1,1}, {-1,-1,0,-1,-1,-1,-1,-1}, {-1,-1,-1,-1,-1,-1,-1,-1}, {0,0,-1,-1,1,0,-1,-1}, {-1,-1,-1,-1,-1,-1,0,1}, {1,-1,0,0,-1,-1,1,-1}, {-1,1,1,-1,-1,0,-1,-1}};
@@ -56,11 +56,11 @@ int main() {
     // printf("faux");
     // }
     afficher_tableau(t);
-    recurence_cree_tableau_AI(t, conte, pose, tab_t, tab_n, ch, tab_parfait);
-    afficher_tableau(t);
-    printf("##########################\n");
-    for (int i = 0; i <ch+1; i++){
+    recurence_cree_tableau_AI(t, conte, pose, tab_t, tab_n, &ch, tab_parfait);
+    printf("la/les solution(s) est/sont :\n\n");
+    for (int i = 0; i <ch; i++){
         afficher_tableau(tab_parfait[i]);
+        printf("\n");
     }
     return 0;
 }
