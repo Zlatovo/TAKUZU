@@ -32,7 +32,7 @@ void saisir_valeurs(int tab[TAILLE][TAILLE]) {
         printf("La valeur doit etre 0 ou 1 :\n");
         scanf("%d", &val);
     }
-    printf("Indiquez le ligne puis la colonne de la valeur a ajouter :\n");
+    printf("Indiquez la ligne puis la colonne de la valeur a ajouter :\n");
     scanf("%d %d", &lig, &col);
 
     tab[lig][col] = val;
@@ -63,6 +63,8 @@ void saisir_valeurs(int tab[TAILLE][TAILLE]) {
 // Created by Adrie on 26/04/2022.
 //
 
+//verifier un tableau :
+
 bool verifeiller_deux_ligne(int t1[TAILLEL], int t2[TAILLEL]){
     for (int i = 0; i<TAILLEL; i++){
         if (t1[i] != t2[i] || t1[i] == -1) {
@@ -71,6 +73,7 @@ bool verifeiller_deux_ligne(int t1[TAILLEL], int t2[TAILLEL]){
     }
     return false;
 }
+
 bool valider_un_coup(int t[TAILLEL][TAILLEL]){
     //verifie que il n'y a pas trois fois le meme chifre et N0 = N1 = TAILLEL/2
     for (int l = 0; l<TAILLEL; l++){
@@ -123,7 +126,8 @@ bool valider_un_coup(int t[TAILLEL][TAILLEL]){
     }
     return true;
 }
-bool tableau_plain(int t[TAILLEL][TAILLEL]){
+
+bool tableau_pas_plain(int t[TAILLEL][TAILLEL]){
     for (int i = 0; i<TAILLEL; i++) {
         for (int j = 0; j < TAILLEL; j++) {
             if (t[i][j] == -1) {
@@ -134,19 +138,8 @@ bool tableau_plain(int t[TAILLEL][TAILLEL]){
     return false;
 }
 
-void afficher_tableau(int t[TAILLEL][TAILLEL]){
-    for (int i = 0; i<TAILLEL; i++){
-        for (int j = 0; j<TAILLEL; j++){
-            if (t[i][j] == -1){
-                printf(" \t");
-            } else {
-                printf("%d\t", t[i][j]);
-            }
-        }
-        printf("\n");
-    }
-}
 
+//remplire le tableau a partire du masque
 void ajouter_ligne(int t[TAILLEL][TAILLEL], int val, int ligne){
     for (int i = 0; i<TAILLEL; i++){
         if (t[ligne][i] == -1){
@@ -154,6 +147,7 @@ void ajouter_ligne(int t[TAILLEL][TAILLEL], int val, int ligne){
         }
     }
 }
+
 void ajouter_colone(int t[TAILLEL][TAILLEL], int val, int colone){
     for (int i = 0; i<TAILLEL; i++){
         if (t[i][colone] == -1){
@@ -161,74 +155,93 @@ void ajouter_colone(int t[TAILLEL][TAILLEL], int val, int colone){
         }
     }
 }
+
 void double_triple_tableau(int t[TAILLEL][TAILLEL]){
     for (int i = 0; i<TAILLEL; i++) {
         for (int j = 0; j < TAILLEL; j++) {
-            //ligne 0110
-            if (t[i][j] == 1 && t[i][j+1] == 1){
-                if (j != 0 && t[i][j-1] == -1 ){
-                    t[i][j-1] = 0;
+            // pour etre sur que toutes les valeux chercher et sesi existe
+            if (j+1<TAILLEL){
+                //ligne 0110
+                if (t[i][j] == 1 && t[i][j+1] == 1){
+                    if (j != 0 && t[i][j-1] == -1 && j-1 >-1){
+                        t[i][j-1] = 0;
+                    }
+                    if (j+1 != TAILLEL-1 && t[i][j+2] == -1 && j+2 <TAILLEL){
+                        t[i][j+2] = 0;
+                    }
                 }
-                if (j+1 != TAILLEL-1&& t[i][j+2] == -1){
-                    t[i][j+2] = 0;
+
+                //ligne 1001
+                if (t[i][j] == 0 && t[i][j+1] == 0){
+                    if (j != 0 && t[i][j-1] == -1 && j-1 >-1){
+                        t[i][j-1] = 1;
+                    }
+                    if (j+1 != TAILLEL-1 && t[i][j+2] == -1 && j+2 <TAILLEL){
+                        t[i][j+2] = 1;
+                    }
                 }
-            }
-            //ligne 1001
-            if (t[i][j] == 0 && t[i][j+1] == 0){
-                if (j != 0 && t[i][j-1] == -1){
-                    t[i][j-1] = 1;
+
+                //colone 1001
+                if (t[j][i] == 1 && t[j+1][i] == 1){
+                    if (j != 0 && t[j-1][i] == -1 && j-1 >-1){
+                        t[j-1][i] = 0;
+                    }
+                    if (j+1 != TAILLEL-1 && t[j+2][i] == -1 && j+2 <TAILLEL){
+                        t[j+2][i] = 0;
+                    }
                 }
-                if (j+1 != TAILLEL-1 && t[i][j+2] == -1){
-                    t[i][j+2] = 1;
-                }
-            }
-            //ligne 101
-            if (t[i][j] == 1 && t[i][j+1] == -1 && t[i][j+2] == 1 && j+2 != TAILLEL && j+1 != TAILLEL){
-                t[i][j+1] = 0;
-            }
-            //ligne 010
-            if (t[i][j] == 0 && t[i][j+1] == -1 && t[i][j+2] == 0 && j+2 != TAILLEL && j+1 != TAILLEL){
-                t[i][j+1] = 1;
-            }
-            //colone 1001
-            if (t[j][i] == 1 && t[j+1][i] == 1){
-                if (j != 0 && t[j-1][i] == -1){
-                    t[j-1][i] = 0;
-                }
-                if (j+1 != TAILLEL-1 && t[j+2][i] == -1){
-                    t[j+2][i] = 0;
-                }
-            }
-            //colone 0110
-            if (t[j][i] == 0 && t[j+1][i] == 0){
-                if (j != 0 && t[j-1][i] == -1){
-                    t[j-1][i] = 1;
-                }
-                if (j+1 != TAILLEL-1 && t[j+2][i] == -1){
-                    t[j+2][i] = 1;
+
+                //colone 0110
+                if (t[j][i] == 0 && t[j+1][i] == 0){
+                    if (j != 0 && t[j-1][i] == -1 && j-1 >-1){
+                        t[j-1][i] = 1;
+                    }
+                    if (j+1 != TAILLEL-1 && t[j+2][i] == -1 && j+2 <TAILLEL){
+                        t[j+2][i] = 1;
+                    }
                 }
             }
-            //colone 101
-            if (t[j][i] == 1 && t[j+1][i] == -1 && t[j+2][i] == 1 && j+2 != TAILLEL && j+1 != TAILLEL){
-                t[j+1][i] = 0;
-            }
-            //colone 010
-            if (t[j][i] == 0 && t[j+1][i] == -1 && t[j+2][i] == 0 && j+2 != TAILLEL && j+1 != TAILLEL){
-                t[j+1][i] = 1;
+            if (j+2<TAILLEL){
+                //ligne 101
+                if (t[i][j] == 1 && t[i][j+1] == -1 && t[i][j+2] == 1 && j+1 < TAILLEL){
+                    t[i][j+1] = 0;
+                }
+
+                //ligne 010
+                if (t[i][j] == 0 && t[i][j+1] == -1 && t[i][j+2] == 0 && j+1 < TAILLEL){
+                    t[i][j+1] = 1;
+                }
+
+                //colone 101
+                if (t[j][i] == 1 && t[j+1][i] == -1 && t[j+2][i] == 1 && j+1 < TAILLEL){
+                    t[j+1][i] = 0;
+                }
+
+                //colone 010
+                if (t[j][i] == 0 && t[j+1][i] == -1 && t[j+2][i] == 0 && j+1 < TAILLEL){
+                    t[j+1][i] = 1;
+                }
             }
         }
     }
 }
+
 void fin_tableau(int t[TAILLEL][TAILLEL]){
+    // on regarde si il y a 3 fois 0 / 1 si oui on coplaite la colone/ligne
     for (int i = 0; i<TAILLEL; i++){
+        // init des conteur : ligne 1 / ligne 0 // colone 1 / colone 0
         int nomb_1_l = 0, nomb_0_l = 0, nomb_1_c = 0, nomb_0_c = 0;
+        // on regarde si il y a 3 fois 0 / 1
         for (int j = 0; j<TAILLEL; j++){
+            // on regarde pour les ligne
             if (t[i][j] == 1){
                 nomb_1_l++;
             } else{
-                if (t[i][j] == 0){ nomb_0_l++;
+                if (t[i][j] == 0){
+                    nomb_0_l++;
                 }
             }
+            // on regarde pour les colone
             if (t[j][i] == 1){
                 nomb_1_c++;
             } else{
@@ -237,28 +250,35 @@ void fin_tableau(int t[TAILLEL][TAILLEL]){
                 }
             }
         }
+
+        // si oui on coplaite la ligne
         if (nomb_1_l == TAILLEL/2){
             ajouter_ligne(t, 0, i);
-        } else {
-            if (nomb_0_l == TAILLEL/2){
-                ajouter_ligne(t, 1, i);
-            }
         }
+        if (nomb_0_l == TAILLEL/2){
+            ajouter_ligne(t, 1, i);
+        }
+        // si oui on coplaite la ligne
         if (nomb_1_c == TAILLEL/2){
             ajouter_colone(t, 0, i);
-        } else {
-            if (nomb_0_c == TAILLEL/2){
-                ajouter_colone(t, 1, i);
-            }
+        }
+        if (nomb_0_c == TAILLEL/2){
+            ajouter_colone(t, 1, i);
         }
     }
 }
+
 void comparer_ligne_colone(int t[TAILLEL][TAILLEL]){
     for (int i = 0; i<TAILLEL-1; i++){
         for (int j = i+1; j<TAILLEL; j++){
-            int conte_l_0=0,conte_l_1=0;
-            int conte_c_0=0,conte_c_1=0;
-            int conte_l_R=0, conte_c_R=0;
+            // init des conteur :
+            // ligne 1 / ligne 0
+            int conte_l_0 = 0,conte_l_1 = 0;
+            // colone 1 / colone 0
+            int conte_c_0 = 0,conte_c_1 = 0;
+            // ligne -1 / colone -1
+            int conte_l_T = 0, conte_c_T = 0;
+
             //ligne
             for (int m = 0; m<TAILLEL; m++){
                 if (t[i][m] == t[j][m] && t[i][m] == 1) {
@@ -268,10 +288,10 @@ void comparer_ligne_colone(int t[TAILLEL][TAILLEL]){
                     conte_l_0 ++;
                 }
                 if (t[i][m] == -1 || t[j][m] ==-1){
-                    conte_l_R ++;
+                    conte_l_T ++;
                 }
             }
-            if (conte_l_1 == TAILLEL/2 -1 && conte_l_R == 2){
+            if (conte_l_1 == TAILLEL/2 -1 && conte_l_T == 2){
                 for (int m = 0; m<TAILLEL; m++){
                     if (t[i][m] == 1 && t[j][m] == -1) {
                         t[j][m] = 0;
@@ -281,7 +301,7 @@ void comparer_ligne_colone(int t[TAILLEL][TAILLEL]){
                     }
                 }
             }
-            if (conte_l_0 == TAILLEL/2 -1 && conte_l_R == 2) {
+            if (conte_l_0 == TAILLEL/2 -1 && conte_l_T == 2) {
                 for (int m = 0; m < TAILLEL; m++) {
                     if (t[i][m] == 0 && t[j][m] == -1) {
                         t[j][m] = 1;
@@ -291,6 +311,7 @@ void comparer_ligne_colone(int t[TAILLEL][TAILLEL]){
                     }
                 }
             }
+
             //colone
             for (int k = 0; k<TAILLEL; k++){
                 if (t[k][i] == t[k][j] && t[k][i] == 1) {
@@ -300,10 +321,10 @@ void comparer_ligne_colone(int t[TAILLEL][TAILLEL]){
                     conte_c_0 ++;
                 }
                 if (t[k][i] == -1 || t[k][j] ==-1){
-                    conte_c_R ++;
+                    conte_c_T ++;
                 }
             }
-            if (conte_c_1 == TAILLEL/2 -1 && conte_c_R == 2){
+            if (conte_c_1 == TAILLEL/2 -1 && conte_c_T == 2){
                 for (int k = 0; k<TAILLEL; k++){
                     if (t[k][i] == 1 && t[k][j] == -1) {
                         t[k][j] = 0;
@@ -313,7 +334,7 @@ void comparer_ligne_colone(int t[TAILLEL][TAILLEL]){
                     }
                 }
             }
-            if (conte_c_0 == TAILLEL/2 -1 && conte_c_R == 2) {
+            if (conte_c_0 == TAILLEL/2 -1 && conte_c_T == 2) {
                 for (int k = 0; k < TAILLEL; k++) {
                     if (t[k][i] == 0 && t[k][j] == -1) {
                         t[k][j] = 1;
@@ -326,42 +347,100 @@ void comparer_ligne_colone(int t[TAILLEL][TAILLEL]){
         }
     }
 }
-bool remplire_au_hazard(int t[TAILLEL][TAILLEL], int conte, int tab[TAILLEL], int pose){
-    int i, j;
-    if (conte == 36){
+
+int remplire_au_hazard(int t[TAILLEL][TAILLEL], int tab[TAILLEL], int pose){
+    int conte = tab[pose], i, j, remplie = 0;
+    if (conte > 36){
         conte = 0;
         tab[pose] = 0;
     }
     i = conte / TAILLEL;
     j = conte - (i*TAILLEL);
-    while (i <TAILLEL && tab[pose] != 36){
+    while (i <TAILLEL && tab[pose] < 37 && remplie == 0){
         tab[pose]++;
+        //on regarde si la case est vide
         if (t[i][j] == -1){
+            //on repli par 1
             t[i][j] = 1;
             if (false == valider_un_coup(t)){
+                //si ce n'est pas possible on repli par 0
                 t[i][j] = 0;
+                if (false == valider_un_coup(t)) {
+                    t[i][j] = -1;
+                    //si ça non plus n'est pas possible alors on arrete
+                    remplie -1;
+                } else {
+                    remplie = 1;
+                }
             } else {
-                return true;
-            }
-            if (false == valider_un_coup(t)) {
-                t[i][j] = -1;
-            } else {
-                return true;
+                remplie = 1;
             }
         }
         j++;
-        if (j == TAILLEL){
+        if (j >= TAILLEL){
             i++;
             j = 0;
         }
     }
-    return false;
+    return remplie;
 }
-bool comparer_tableau(int tab_parfait[TAILLEL][TAILLEL], int t[TAILLEL][TAILLEL]){
+
+//utilise les fonction pour remplire le tableau a partire des régle
+void tableau_regle(int t[TAILLEL][TAILLEL]){
+    int i = 0;
+    while (tableau_pas_plain(t) && i < TAILLEL * TAILLEL) {
+        fin_tableau(t);
+        double_triple_tableau(t);
+        comparer_ligne_colone(t);
+        i++;
+    }
+}
+
+void remplire_tableau_avec_tab(int t1[TAILLEL][TAILLEL], int t2[TAILLEL][TAILLEL]){
+    for (int k = 0; k < TAILLEL; k++) {
+        for (int l = 0; l < TAILLEL; l++) {
+            t1[k][l] = t2[k][l];
+        }
+    }
+}
+
+//verifier si on ne peut pas replacer le 1 (mi au hazard) a 0
+bool metre_a_zero(int t[TAILLEL][TAILLEL], int val){
+    int x,y;
+    x = val / TAILLEL;
+    y = val - (x * TAILLEL);
+    t[x][y] = 0;
+    return valider_un_coup(t);
+}
+// on remplie par zero et on teste juscaseque sa marche
+void boucle_zero(int t[TAILLEL][TAILLEL], int *pose, int tab_t[TAILLEL*TAILLEL][TAILLEL][TAILLEL], int tab_n[TAILLEL*TAILLEL]){
+    bool toujour_faux = false;
+    if (*pose != 0){
+        *pose = *pose -1;
+    }
+    remplire_tableau_avec_tab(t, tab_t[*pose]);
+    //printf("*************\n");
+    //afficher_tableau(t);
+    //printf("________%d\n", tab_n[*pose]);
+    //afficher_tableau(tab_t[*pose]);
+    //on sais que 1 ne marche pas donc on essaille 0, si sa ne marche pas on retourne au tableau pres enregistrer
+    toujour_faux = metre_a_zero(t, tab_n[*pose] - 1);
+
+    //tan que c'est faux on continue
+    while (toujour_faux == false && *pose != 0){
+        *pose = *pose -1;
+        remplire_tableau_avec_tab(t, tab_t[*pose]);
+        toujour_faux = metre_a_zero(t, tab_n[*pose] - 1);
+    }
+}
+
+
+// voire si deux tableau sont identique :
+bool comparer_tableau(int t1[TAILLEL][TAILLEL], int t2[TAILLEL][TAILLEL]){
     bool passe = false;
     int i = 0, j =0;
     while (i<TAILLEL && passe == false){
-        if (tab_parfait[i][j] != t[i][j]){
+        if (t1[i][j] != t2[i][j]){
             passe = true;
         }
         j++;
@@ -374,93 +453,5 @@ bool comparer_tableau(int tab_parfait[TAILLEL][TAILLEL], int t[TAILLEL][TAILLEL]
 }
 
 
-void recurence_cree_tableau_AI(int t[TAILLEL][TAILLEL], int conte, int pose, int tab_t[TAILLEL*TAILLEL][TAILLEL][TAILLEL], int tab_n[TAILLEL*TAILLEL], int *ch, int tab_parfait[TAILLEL*TAILLEL][TAILLEL][TAILLEL]){
-    if (tab_n[0] != 36) {
-        if (conte < 2000 && tableau_plain(t) && pose < TAILLEL * TAILLEL) {
-            conte++;
-            int i = 0;
-            while (tableau_plain(t) && i < TAILLEL * TAILLEL) {
-                fin_tableau(t);
-                double_triple_tableau(t);
-                comparer_ligne_colone(t);
-                i++;
-            }
-            if (false == tableau_plain(t) && false == valider_un_coup(t)) {
-                pose--;
-                for (int k = 0; k < TAILLEL; k++) {
-                    for (int l = 0; l < TAILLEL; l++) {
-                        t[k][l] = tab_t[pose][k][l];
-                    }
-                }
-                int x, y;
-                x = (tab_n[pose] - 1) / TAILLEL;
-                y = (tab_n[pose] - 1) - (x * TAILLEL);
-                t[x][y] = 0;
-                if (false == valider_un_coup(t)) {
-                    t[x][y] = -1;
-                }
-            } else {
-                for (int k = 0; k < TAILLEL; k++) {
-                    for (int l = 0; l < TAILLEL; l++) {
-                        tab_t[pose][k][l] = t[k][l];
-                    }
-                }
-            }
-            if (tableau_plain(t)) {
-                bool a = remplire_au_hazard(t, tab_n[pose], tab_n, pose);
-                if (a == true) {
-                    pose++;
-                    recurence_cree_tableau_AI(t, conte, pose, tab_t, tab_n, ch, tab_parfait);
-                } else {
-                    pose--;
-                    for (int k = 0; k < TAILLEL; k++) {
-                        for (int l = 0; l < TAILLEL; l++) {
-                            t[k][l] = tab_t[pose][k][l];
-                        }
-                    }
-                    int x, y;
-                    x = (tab_n[pose] - 1) / TAILLEL;
-                    y = (tab_n[pose] - 1) - (x * TAILLEL);
-                    t[x][y] = 0;
-                    if (false == valider_un_coup(t)) {
-                        t[x][y] = -1;
-                    }
-                    recurence_cree_tableau_AI(t, conte, pose, tab_t, tab_n, ch, tab_parfait);
-                }
-            }
-        }
-        if (tableau_plain(t) == false && tab_n[0] != 36) {
-            int q = 0;
-            bool passe = true;
-            while (q<*ch && passe == true && *ch != 0){
-                passe = comparer_tableau(tab_parfait[*ch-1], t);
-                q++;
-            }
-            if (passe) {
-                for (int k = 0; k < TAILLEL; k++) {
-                    for (int l = 0; l < TAILLEL; l++) {
-                        tab_parfait[*ch][k][l] = t[k][l];
-                    }
-                }
-                *ch = *ch + 1;
-            }
 
-            if (tab_n[1] != 36) {
-                pose--;
-                for (int k = 0; k < TAILLEL; k++) {
-                    for (int l = 0; l < TAILLEL; l++) {
-                        t[k][l] = tab_t[pose][k][l];
-                    }
-                }
-                int x, y;
-                x = (tab_n[pose] - 1) / TAILLEL;
-                y = (tab_n[pose] - 1) - (x * TAILLEL);
-                t[x][y] = 0;
-                if (false == valider_un_coup(t)) {
-                    t[x][y] = -1;
-                }
-                recurence_cree_tableau_AI(t, conte, pose, tab_t, tab_n, ch, tab_parfait);
-            }
-        }
-    }
-}
+

@@ -3,4 +3,4 @@ project(TAKUZU C)
 
 set(CMAKE_C_STANDARD 99)
 
-add_executable(TAKUZU main.c TAKUZU.c TAKUZU.h)
+add_executable(TAKUZU main.c TAKUZU.c TAKUZU.h menu.c Matrice.c)
