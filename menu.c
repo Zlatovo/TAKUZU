@@ -4,7 +4,6 @@
 
 #include "TAKUZU.h"
 
-
 void star_game_Takuzu(){
     // on inisialise tout les parametre d'on on aura besoin
     int TAILLE = 16, **t, ch = 0, ***tab_parfait, dif = 0, largeur = 0, **matrice_complaite, **masque, vie_du_joueur = 2;
@@ -137,16 +136,15 @@ void game_over(int ***tab_parfait, int ch, int **masque, int TAILLE){
 
 
 
-
-
+//// a faire
+//cree_la_matrise_plaine(matrice_complaite, largeur, TAILLE);
+//cree_le_masque(masque, matrice_complaite, dif, TAILLE);
 
 //// a faire
-//5. Lorsque le coup est invalide, le joueur perd une vie. Le programme doit lui indiquer la règle qui n’a pas été
-//        respectée et lui affiche un indice (quand cela est possible) pour l’aider à corriger son coup.
-//
+//2. Lorsque le coup est invalide, le joueur perd une vie.
+// Le programme doit lui indiquer la règle qui n’a pas été respectée
+// lui affiche un indice (quand cela est possible) pour l’aider à corriger son coup.
+
 //// a faire
-//6. Si le coup est valide mais pas correct, afficher comme indice « Coup valide mais incorrect ! »
-//
-//// a faire
-//9. Si l’utilisateur a consommé 3 vies, le programme s’arrête en indiquant un échec dans la résolution de la
-//grille.
+//3. Si le coup est valide mais pas correct, afficher comme indice « Coup valide mais incorrect ! »
+
