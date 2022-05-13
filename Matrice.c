@@ -3,52 +3,39 @@
 //
 #include "TAKUZU.h"
 
-void afficher_tableau(int t[TAILLEL][TAILLEL]){
-    for (int i = 0; i<TAILLEL; i++){
-        for (int j = 0; j<TAILLEL; j++){
-            if (t[i][j] == -1){
-                printf(" \t");
-            } else {
-                printf("%d\t", t[i][j]);
-            }
-        }
-        printf("\n");
-    }
-}
-
-bool recurence_cree_tableau_AI(int t[TAILLEL][TAILLEL], int *pose, int tab_t[TAILLEL*TAILLEL][TAILLEL][TAILLEL], int tab_n[TAILLEL*TAILLEL]){
+bool recurence_cree_tableau_AI(int **t, int *pose, int ***tab_t, int *tab_n, int TAILLE){
     if (tab_n[1] == 36) {
         return true;
     } else {
 
         //utiliser les regle du TAKUZU pour remplire au maximum le tableau
-        tableau_regle(t);
-        if (false == tableau_pas_plain(t) && true == valider_un_coup(t) && *pose == 0) {
+        tableau_regle(t, TAILLE);
+        if (false == tableau_pas_plain(t, TAILLE) && true == valider_un_coup(t, TAILLE) && *pose == 0) {
             return true;
         } else {
             //si le tableau est remple verifier si il est corect
-            if (false == tableau_pas_plain(t) && false == valider_un_coup(t)) {
+            if (false == tableau_pas_plain(t, TAILLE) && false == valider_un_coup(t, TAILLE)) {
                 //si il est faut on recomence
-                boucle_zero(t, pose, tab_t, tab_n);
-                return recurence_cree_tableau_AI(t, pose, tab_t, tab_n);
+                boucle_zero(t, pose, tab_t, tab_n, TAILLE);
+                return recurence_cree_tableau_AI(t, pose, tab_t, tab_n, TAILLE);
             } else {
-                if (false == valider_un_coup(t)) {
+                if (false == valider_un_coup(t, TAILLE)) {
                     //si il est faut on recomence
-                    boucle_zero(t, pose, tab_t, tab_n);
-                    return recurence_cree_tableau_AI(t, pose, tab_t, tab_n);
+                    boucle_zero(t, pose, tab_t, tab_n, TAILLE);
+                    return recurence_cree_tableau_AI(t, pose, tab_t, tab_n, TAILLE);
                 } else {
-                    if (tableau_pas_plain(t)) {
-                        remplire_tableau_avec_tab(tab_t[*pose], t);
+                    if (tableau_pas_plain(t, TAILLE)) {
+                        remplire_tableau_avec_tab(tab_t[*pose], t, TAILLE);
                         //le tableau copleté avec les regle (mais pas complait), on le continue au hazard
-                        int a = remplire_au_hazard(t, tab_n, *pose);
+                        int a = remplire_au_hazard(t, tab_n, *pose, TAILLE);
                         if (a == 1) {
                             //il n'y a pas d'ereur on rapele la fonction  et on passe a l'iteration suivente ppur pose
                             *pose = *pose +1;
-                            return recurence_cree_tableau_AI(t, pose, tab_t, tab_n);
+                            return recurence_cree_tableau_AI(t, pose, tab_t, tab_n, TAILLE);
                         } else {
                             //si il est faut on recomence
-                            boucle_zero(t, pose, tab_t, tab_n);
-                            return recurence_cree_tableau_AI(t, pose, tab_t, tab_n);
+                            boucle_zero(t, pose, tab_t, tab_n, TAILLE);
+                            return recurence_cree_tableau_AI(t, pose, tab_t, tab_n, TAILLE);
                         }
                     }
                 }
@@ -59,44 +46,52 @@ bool recurence_cree_tableau_AI(int t[TAILLEL][TAILLEL], int *pose, int tab_t[TAI
     }
 }
 
-void trouver_tous_les_solution(int t[TAILLEL][TAILLEL], int tab_parfait[TAILLEL*TAILLEL][TAILLEL][TAILLEL], int *ch){
+void trouver_tous_les_solution(int **t, int ***tab_parfait, int *ch, int TAILLE){
     bool valider_la_fin = false;
-    int pose = 0, tab_t[TAILLEL*TAILLEL][TAILLEL][TAILLEL],tab_n[TAILLEL*TAILLEL];
-    for (int b = 0; b<TAILLEL*TAILLEL; b++){
+    int pose = 0, ***tab_t,*tab_n;
+
+    tab_n=(int*)malloc(TAILLE*TAILLE * sizeof(int*));
+    // cree espase pour tab_t
+    tab_t = (int***)malloc(TAILLE*TAILLE * sizeof(int*));
+    for (int i = 0; i<TAILLE*TAILLE; i++){
+        tab_t[i] = (int**)malloc(TAILLE * sizeof(int*));
+        for (int j = 0; j<TAILLE; j++){
+            tab_t[i][j] = (int *) calloc ( TAILLE, sizeof(int));
+        }
+    }
+
+    for (int b = 0; b<TAILLE*TAILLE; b++){
         tab_n[b] = 0;
     }
+
     while (valider_la_fin == false){
-        valider_la_fin = recurence_cree_tableau_AI(t, &pose, tab_t, tab_n);
+        valider_la_fin = recurence_cree_tableau_AI(t, &pose, tab_t, tab_n, TAILLE);
         if (valider_la_fin == false){
             bool passe = true;
             int q = 0;
 
             // on verifi si la solution donner n'existe pas deja / si le tableau a d'eja une solution
             while (q < *ch && passe == true && *ch != 0) {
-                passe = comparer_tableau(tab_parfait[*ch - 1], t);
+                passe = comparer_tableau(tab_parfait[*ch - 1], t, TAILLE);
                 q++;
             }
 
             // si c'est une nouvel solution => ajouter au tableau des solution
             if (passe) {
-                remplire_tableau_avec_tab(tab_parfait[*ch], t);
+                remplire_tableau_avec_tab(tab_parfait[*ch], t, TAILLE);
                 *ch = *ch + 1;
             }
             //on retourne au tableau pres remplie enregistrer en dernier dans tab_t
             if (pose != 0){
                 pose--;
             }
-            remplire_tableau_avec_tab(t, tab_t[pose]);
+            remplire_tableau_avec_tab(t, tab_t[pose], TAILLE);
 
         } else {
             if (pose == 0 && tab_n[pose] == 0){
-                    remplire_tableau_avec_tab(tab_parfait[*ch], t);
+                    remplire_tableau_avec_tab(tab_parfait[*ch], t, TAILLE);
                     *ch = *ch + 1;
             }
         }
     }
-
-
-
-
 }
