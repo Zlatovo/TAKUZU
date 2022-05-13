@@ -58,25 +58,44 @@
 // ############################################################################################
 // Adrien
 
-//void saisir_valeurs_adrien(int tab[3]) {
-//    int val = 2;
-//    int lig, col;
-//    printf("Quelle valeur souhaitez vous saisir dans le jeu :\n");
-//    scanf("%d", &val);
-//    while (val > 1 || val < 0) {
-//        printf("La valeur doit etre 0 ou 1 :\n");
-//        scanf("%d", &val);
-//    }
-//    printf("Indiquez la ligne puis la colonne de la valeur a ajouter :\n");
-//    scanf("%d %d", &lig, &col);
-//
-//    tab[lig][col] = val;
-//}
+// modif
+void saisir_valeurs_adrien(int **t, int *coup_du_jouer, int TAILLE){
+    int val = 2, lig = -1, col = -1;
+    bool libre = false;
+    // on dement de la valeur
+    printf("Quelle valeur souhaitez vous saisir dans le jeu :\n");
+    while (val > 1 || val < 0) {
+        printf("La valeur doit etre 0 ou 1 : ");
+        scanf("%d", &val);
+        printf("\n");
+    }
+    // on demande la ligne et la colone
+    printf("Indiquez la ligne puis la colonne de la valeur a ajouter :\n");
+    while (lig > TAILLE || lig < 0 && col > TAILLE || col < 0 || libre == false) {
+        printf("Les valeurs doivent etre entre 0 et %d (x;y): ", TAILLE);
+        scanf("%d %d", &lig, &col);
+        if (t[lig][col] == -1){
+            libre = true;
+        } else{
+            printf("il faut que la case soit vide\n");
+        }
+        printf("\n");
+    }
 
+    // on ajoute les donner dans la liste
+    coup_du_jouer[0] = val;
+    coup_du_jouer[1] = lig;
+    coup_du_jouer[2] = col;
+}
 
-
-
-
+void regle_du_jeux(){
+    printf("Les règles du Takuzu sont :\n");
+    printf("1. Dans une ligne, il doit y avoir autant de 0que de 1\n");
+    printf("2. Dans une colonne, il doit y avoir autant de 0que de 1\n");
+    printf("3. Il ne peut pas y avoir deux lignes identiques dans une grille\n");
+    printf("3. Il ne peut pas y avoir deux colonnes identiques dans une grille\n");
+    printf("5. Dans une ligne ou une colonne, il ne peut y avoir plus de deux 0 ou deux 1 à la suite (on ne peut pas avoir trois 0 de suite ou trois 1 de suite)\n");
+}
 
 
 
@@ -135,7 +154,7 @@ bool comparer_tableau(int **t1, int **t2, int TAILLE){
 }
 
 //verifier un tableau :
-bool valider_un_coup(int **t, int TAILLE){
+bool valider_un_tableau(int **t, int TAILLE){
     //verifie que il n'y a pas trois fois le meme chifre et N0 = N1 = TAILLEL/2
     for (int l = 0; l<TAILLE; l++){
         for (int c = 0; c<TAILLE; c++){
@@ -185,6 +204,98 @@ bool valider_un_coup(int **t, int TAILLE){
             }
         }
     }
+    return true;
+}
+bool valider_un_coup(int **t, int l, int c, int TAILLE){
+    int conte_l_1 = 0, conte_l_0 = 0, conte_c_1 = 0, conte_c_0 = 0, con_c = 0, con_l = 0, val_l = t[l][0], val_c = t[0][c];
+    for (int i = 0; i<TAILLE; i++){
+        //ligne
+        if (t[l][i] == 1){
+            conte_l_1 += 1;
+        } else {
+            if (t[l][i] == 0){
+                conte_l_0 += 1;
+            }
+        }
+        if (t[l][i] != val_l || t[l][i] == -1){
+            con_l = 1; val_l = t[l][i];
+        } else {
+            con_l ++;
+        }
+        //colone
+        if (t[l][i] == 1){
+            conte_c_1 += 1;
+        } else {
+            if (t[l][i] == 0){
+                conte_c_0 += 1;
+            }
+        }
+        if (t[i][c] != val_c || t[i][c] == -1){
+            con_c = 1; val_c = t[i][c];
+        } else {
+            con_c ++;
+        }
+
+        //verifier
+        if (conte_l_1 > TAILLE/2){
+            printf("Une des regle du TAKUZU a ete briser\n");
+            printf("il y a trop de 1 dans la colone\n");
+            return false;
+        } else{
+            if (conte_l_0 > TAILLE / 2) {
+                printf("Une des regle du TAKUZU a ete briser\n");
+                printf("il y a trop de 0 dans la colone\n");
+                return false;
+            } else{
+                if (conte_c_1 > TAILLE / 2) {
+                    printf("Une des regle du TAKUZU a ete briser\n");
+                    printf("il y a trop de 1 dans la colone\n");
+                    return false;
+                } else {
+                    if (conte_c_0 > TAILLE / 2) {
+                        printf("Une des regle du TAKUZU a ete briser\n");
+                        printf("il y a trop de 0 dans la colone\n");
+                        return false;
+                    } else {
+                        if (con_c == 3) {
+                            printf("Une des regle du TAKUZU a ete briser\n");
+                            printf("Il y a trois chifre identique a la suite dans la colone\n");
+                            return false;
+                        } else {
+                            if (con_l == 3) {
+                                printf("Une des regle du TAKUZU a ete briser\n");
+                                printf("Il y a trois chifre identique a la suite dans la ligne\n");
+                                return false;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    //verifie que les ligne et colone sont diferante
+    for (int i = 0; i<TAILLE-1; i++){
+        for (int j = i+1; j<TAILLE; j++){
+            int conte= 0;
+            if (verifeiller_deux_ligne(t[i], t[j], TAILLE)){
+                for (int k = 0; k<TAILLE; k++){
+                    if (t[k][i] == t[k][j] && t[k][i] != -1){
+                        conte ++;
+                    }
+                    if (conte == TAILLE){
+                        printf("Une des regle du TAKUZU a ete briser\n");
+                        printf("Il y a deux colone identique\n");
+                        return false;
+                    }
+                }
+            }else {
+                printf("Une des regle du TAKUZU a ete briser\n");
+                printf("Il y a deux ligne identique\n");
+                return false;
+            }
+        }
+    }
+
     return true;
 }
 bool verifeiller_deux_ligne(int *t1, int *t2, int TAILLE){
@@ -430,10 +541,10 @@ int remplire_au_hazard(int **t, int *tab, int pose, int TAILLE){
         if (t[i][j] == -1){
             //on repli par 1
             t[i][j] = 1;
-            if (false == valider_un_coup(t, TAILLE)){
+            if (false == valider_un_coup(t, i, j, TAILLE)){
                 //si ce n'est pas possible on repli par 0
                 t[i][j] = 0;
-                if (false == valider_un_coup(t, TAILLE)) {
+                if (false == valider_un_coup(t, i, j, TAILLE)) {
                     t[i][j] = -1;
                     //si ça non plus n'est pas possible alors on arrete
                     remplie -1;
@@ -460,7 +571,7 @@ bool metre_a_zero(int **t, int val, int TAILLE){
     x = val / TAILLE;
     y = val - (x * TAILLE);
     t[x][y] = 0;
-    return valider_un_coup(t, TAILLE);
+    return valider_un_coup(t, x, y, TAILLE);
 }
 void boucle_zero(int **t, int *pose, int ***tab_t, int *tab_n, int TAILLE){
     // on remplie par zero

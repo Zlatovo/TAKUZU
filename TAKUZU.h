@@ -26,42 +26,18 @@
 
 
 // modification sur ton project :
-//void saisir_valeurs_adrien(int tab[TAILLEL]);
-//
-//
-////matrice
-//bool recurence_cree_tableau_AI(int t[TAILLEL][TAILLEL], int *pose, int tab_t[TAILLEL*TAILLEL][TAILLEL][TAILLEL], int tab_n[TAILLEL*TAILLEL]);
-//void trouver_tous_les_solution(int t[TAILLEL][TAILLEL], int tab_parfait[TAILLEL*TAILLEL][TAILLEL][TAILLEL], int *ch);
-//
-//
-////fonction utile :
-//void afficher_tableau(int t[TAILLEL][TAILLEL]);
-//void remplire_tableau_avec_tab(int t1[TAILLEL][TAILLEL], int t2[TAILLEL][TAILLEL]);
-//bool tableau_pas_plain(int t[TAILLEL][TAILLEL]);
-//bool comparer_tableau(int t1[TAILLEL][TAILLEL], int t2[TAILLEL][TAILLEL]);
-//
-////verifier un tableau :
-//bool valider_un_coup(int t[TAILLEL][TAILLEL]);
-//bool verifeiller_deux_ligne(int t1[TAILLEL], int t2[TAILLEL]);
-//
-//// permet de metre la "val" dans un espase vide
-//void ajouter_ligne(int t[TAILLEL][TAILLEL], int val, int ligne);
-//void ajouter_colone(int t[TAILLEL][TAILLEL], int val, int colone);
-//
-//// regel utiliser pour remplire le tableau
-//void tableau_regle(int t[TAILLEL][TAILLEL]);
-//void double_triple_tableau(int t[TAILLEL][TAILLEL]);
-//void fin_tableau(int t[TAILLEL][TAILLEL]);
-//void comparer_ligne_colone(int t[TAILLEL][TAILLEL]);
-//
-//// pose 1 ou 0, si c'est possible, renvoi : 1 (remplie : 1/0), 0 (si deja complet), -1 (pas de sol)
-//int remplire_au_hazard(int t[TAILLEL][TAILLEL], int tab[TAILLEL], int pose);
-//
-////permet de remplacer une valeur mise au hazard (qui na pas fonctionner et remplacer par 0
-//bool metre_a_zero(int t[TAILLEL][TAILLEL], int val);
-//void boucle_zero(int t[TAILLEL][TAILLEL], int *pose, int tab_t[TAILLEL*TAILLEL][TAILLEL][TAILLEL], int tab_n[TAILLEL*TAILLEL]);
+void saisir_valeurs_adrien(int **t, int *coup_du_jouer, int TAILLE);
+void regle_du_jeux();
 
 
+
+//menu / jeux
+void star_game_Takuzu();
+void menu(int *dif, int *largeur);
+void cree_la_matrise_plaine(int **matrice_complaite, int largeur, int TAILLE);
+void cree_le_masque(int **masque, int **matrice_complaite, int dif, int TAILLE);
+void commencer_a_joux(int **t, int **matrice_complaite, int TAILLE, int *vie_du_joueur);
+void game_over(int ***tab_parfait, int ch, int **masque, int TAILLE);
 
 //matrice
 bool recurence_cree_tableau_AI(int **t, int *pose, int ***tab_t, int *tab_n, int TAILLE);
@@ -74,7 +50,8 @@ bool tableau_pas_plain(int **t, int TAILLE);
 bool comparer_tableau(int **t1, int **t2, int TAILLE);
 
 //verifier un tableau :
-bool valider_un_coup(int **t, int TAILLE);
+bool valider_un_tableau(int **t, int TAILLE);
+bool valider_un_coup(int **t, int l, int c, int TAILLE);
 bool verifeiller_deux_ligne(int *t1, int *t2, int TAILLE);
 
 // permet de metre la "val" dans un espase vide

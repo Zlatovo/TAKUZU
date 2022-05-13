@@ -10,16 +10,16 @@ bool recurence_cree_tableau_AI(int **t, int *pose, int ***tab_t, int *tab_n, int
 
         //utiliser les regle du TAKUZU pour remplire au maximum le tableau
         tableau_regle(t, TAILLE);
-        if (false == tableau_pas_plain(t, TAILLE) && true == valider_un_coup(t, TAILLE) && *pose == 0) {
+        if (false == tableau_pas_plain(t, TAILLE) && true == valider_un_tableau(t, TAILLE) && *pose == 0) {
             return true;
         } else {
             //si le tableau est remple verifier si il est corect
-            if (false == tableau_pas_plain(t, TAILLE) && false == valider_un_coup(t, TAILLE)) {
+            if (false == tableau_pas_plain(t, TAILLE) && false == valider_un_tableau(t, TAILLE)) {
                 //si il est faut on recomence
                 boucle_zero(t, pose, tab_t, tab_n, TAILLE);
                 return recurence_cree_tableau_AI(t, pose, tab_t, tab_n, TAILLE);
             } else {
-                if (false == valider_un_coup(t, TAILLE)) {
+                if (false == valider_un_tableau(t, TAILLE)) {
                     //si il est faut on recomence
                     boucle_zero(t, pose, tab_t, tab_n, TAILLE);
                     return recurence_cree_tableau_AI(t, pose, tab_t, tab_n, TAILLE);
