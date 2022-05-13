@@ -61,6 +61,29 @@ void star_game_Takuzu(){
     trouver_tous_les_solution(masque,tab_parfait, &ch, TAILLE);
     //on remet le masque a sont etat original
     remplire_tableau_avec_tab(masque, t, TAILLE);
+
+
+    //// on verifi si l'une des solutions trouver par le programe est bonne :
+    //bool corecte = false;
+    //int i = 0;
+    //while (corecte == false && i<ch){
+    //    corecte = comparer_tableau(tab_parfait[i], t, TAILLE);
+    //    i++;
+    //}
+    //if (corecte == false){
+    //    // si ce n'est pas le cas on met comme solution unique le tableau de depard
+    //    printf(" Il y a eu une erreur\n");
+    //    printf("La ou les solution(s) trouver par l'ordinateur n'est pas corecte\n");
+    //    printf("Contacter nous au : 345334.... pour plus d'information\n");
+    //    remplire_tableau_avec_tab(tab_parfait[0], matrice_complaite, TAILLE);
+    //    ch = 1;
+    //}
+
+
+
+
+
+
     //au tour du joueur
     commencer_a_joux(t, matrice_complaite, TAILLE, &vie_du_joueur);
     if (vie_du_joueur == 0){
@@ -147,4 +170,3 @@ void game_over(int ***tab_parfait, int ch, int **masque, int TAILLE){
 
 //// a faire
 //3. Si le coup est valide mais pas correct, afficher comme indice « Coup valide mais incorrect ! »
-
