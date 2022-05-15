@@ -42,7 +42,7 @@ void star_game_Takuzu(){
     menu(&dif, &largeur);
     //creeation de la partie
     //cree_la_matrise_plaine(matrice_complaite, largeur, TAILLE);
-    //cree_le_masque(masque, matrice_complaite, dif, TAILLE);
+    cree_le_masque(masque, matrice_complaite, dif, TAILLE);
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //int ex[TAILLEL][TAILLEL] = { {1,-1,-1,-1}, {-1,-1,1,-1}, {0,-1,1,0}, {-1,1,-1,-1} };
     //int ex[TAILLEL][TAILLEL] = { {0,0,-1,0,-1,-1}, {-1,0,-1,-1,-1,0}, {-1,-1,-1,1,-1,-1}, {1,-1,0,-1,-1,-1}, {-1,-1,-1,-1,-1,1}, {-1,-1,-1,-1,1,-1}};
@@ -55,6 +55,7 @@ void star_game_Takuzu(){
         }
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     //remplire t avec le masque
     remplire_tableau_avec_tab(t, masque, TAILLE);
     //le programe lui trouve toutes les solution
@@ -77,6 +78,7 @@ void star_game_Takuzu(){
     //    printf("Contacter nous au : 345334.... pour plus d'information\n");
     //    remplire_tableau_avec_tab(tab_parfait[0], matrice_complaite, TAILLE);
     //    ch = 1;
+    //    sleep(4);
     //}
 
 
@@ -129,11 +131,20 @@ void commencer_a_joux(int **t, int **matrice_complaite, int TAILLE, int *vie_du_
             // on regarde si c'est juste ou pas
             passer = valider_un_coup(t, coup_du_jouer[1], coup_du_jouer[2],TAILLE);
             if (passer == false){
-                // si non on retire une vie
+                // si non on retire une vie et on aide si c'est possible
+                tableau_regle_joueur(t, TAILLE);
                 *vie_du_joueur = *vie_du_joueur - 1;
                 t[coup_du_jouer[1]][coup_du_jouer[2]] = -1;
-                printf("Il ne vous reste plus que %d vie\n", *vie_du_joueur);
+                printf("Il ne vous reste plus que %d vie\n", *vie_du_joueur + 1);
+            } else {
+                if (matrice_complaite[coup_du_jouer[1]][coup_du_jouer[2]] != coup_du_jouer[0]){
+                    printf("Coup valide mais incorrect !\n");
+                    printf("Il respecte les regle mais n'est pas celui attendu.\n");
+                    printf("Vous avez toujours %d vie\n", *vie_du_joueur + 1);
+                    t[coup_du_jouer[1]][coup_du_jouer[2]] = -1;
+                }
             }
+            sleep(4);
             afficher_tableau(t, TAILLE);
         }
     }
@@ -157,16 +168,20 @@ void game_over(int ***tab_parfait, int ch, int **masque, int TAILLE){
     }
 }
 
-
-
-//// a faire
-//cree_la_matrise_plaine(matrice_complaite, largeur, TAILLE);
-//cree_le_masque(masque, matrice_complaite, dif, TAILLE);
-
-//// a faire
-//2. Lorsque le coup est invalide, le joueur perd une vie.
-// Le programme doit lui indiquer la règle qui n’a pas été respectée
-// lui affiche un indice (quand cela est possible) pour l’aider à corriger son coup.
-
-//// a faire
-//3. Si le coup est valide mais pas correct, afficher comme indice « Coup valide mais incorrect ! »
+void cree_le_masque(int **masque, int **matrice_complaite, int dif, int TAILLE){
+    //creation du masque vide :
+    for (int i=0; i<TAILLE; i++){
+        for (int j=0; j<TAILLE; j++){
+            masque[i][j] = -1;
+        }
+    }
+    int repeter = dif * (TAILLE/100) * 10;
+    // on prend au hazard des chifre de la matrice_complaite
+    while (repeter != 0){
+        int i = rand()%TAILLE, j = rand()%TAILLE;
+        if (masque[i][j] == -1){
+            masque[i][j] = matrice_complaite[i][j];
+            repeter--;
+        }
+    }
+}
