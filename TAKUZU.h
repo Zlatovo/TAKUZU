@@ -7,30 +7,20 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <unistd.h>
 #include <stdbool.h>
 #include <math.h>
 #define TAILLEL 6
 
-
-
-//PARTIE_I
-
-//void creer_tableau_vierge(int *grille_jeu[TAILLE][TAILLE], int size);
-//void creer_tab_dyn(int** *matrice, int size);
-//void saisir_valeurs(int tab [TAILLE][TAILLE]);
-//PARTIE_II
-
-//PARTIE_III
-
-
-// Adrien
-
+// regle du jeux pour aider le jouer
+void tableau_regle_joueur(int **t, int TAILLE);
+bool double_triple_tableau_joueur(int **t, int TAILLE);
+bool fin_tableau_joueur(int **t, int TAILLE);
+bool comparer_ligne_colone_joueur(int **t, int TAILLE);
 
 // modification sur ton project :
 void saisir_valeurs_adrien(int **t, int *coup_du_jouer, int TAILLE);
 void regle_du_jeux();
-
-
 
 //menu / jeux
 void star_game_Takuzu();
