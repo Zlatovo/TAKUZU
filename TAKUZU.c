@@ -46,9 +46,6 @@ void regle_du_jeux(){
     printf("5. Dans une ligne ou une colonne, il ne peut y avoir plus de deux 0 ou deux 1 à la suite (on ne peut pas avoir trois 0 de suite ou trois 1 de suite)\n");
 }
 
-
-
-
 //
 // Created by Adrie on 26/04/2022.
 //
