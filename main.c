@@ -19,6 +19,4 @@ int main() {
         }
     }
     printf("Merci d'avoir jouer a notre jeux.\n");
-
-    //generer_lignes(TAILLEL);
 }
