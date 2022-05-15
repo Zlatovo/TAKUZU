@@ -4,57 +4,6 @@
 
 #include "TAKUZU.h"
 
-//void creer_tableau_vierge(int *grille_jeu[TAILLEL][TAILLEL], int size) {
-//    for (int i = 0; i < size; ++i) {
-//        for (int j = 0; j < size; ++j) {
-//            *grille_jeu[i][j] = -1;
-//        }
-//    }
-///*
-//    srand(time(NULL));
-//    for (int i = 0 ; i < 6 ; i++)
-//    {
-//        int pos1, pos2;
-//        pos1 = rand() % (TAILLEL + 1);
-//        pos2 = rand() % (TAILLEL + 1);
-//        grille_jeu[pos1][pos2] = tab[pos1][pos2];
-//    }
-//*/
-//
-//}
-//
-//void saisir_valeurs(int tab[TAILLEL][TAILLEL]) {
-//    int val = 2;
-//    int lig, col;
-//    printf("Quelle valeur souhaitez vous saisir dans le jeu :\n");
-//    scanf("%d", &val);
-//    while (val > 1 || val < 0) {
-//        printf("La valeur doit etre 0 ou 1 :\n");
-//        scanf("%d", &val);
-//    }
-//    printf("Indiquez la ligne puis la colonne de la valeur a ajouter :\n");
-//    scanf("%d %d", &lig, &col);
-//    tab[lig][col] = val;
-//}
-
-
-/*void creer_tab_dyn(int** *matrice, int size)
-{
-    *matrice = (int**) malloc(size*sizeof(int*));
-    for (int i = 0; i < size ; ++i)
-    {
-        *(*matrice + i) = (int*) malloc(size*sizeof(int*));
-    }
-
-    for (int i = 0; i < TAILLEL; ++i)
-    {
-        for (int j = 0; j < TAILLEL; ++j)
-        {
-            *matrice[i][j] = -1;
-        }
-    }
-*/
-
 // ############################################################################################
 // Adrien
 
@@ -97,12 +46,194 @@ void regle_du_jeux(){
     printf("5. Dans une ligne ou une colonne, il ne peut y avoir plus de deux 0 ou deux 1 à la suite (on ne peut pas avoir trois 0 de suite ou trois 1 de suite)\n");
 }
 
-
-
-
 //
 // Created by Adrie on 26/04/2022.
 //
+
+// regle du jeux pour aider le jouer
+void tableau_regle_joueur(int **t, int TAILLE){
+    //utilise les fonction pour donner des indice a partire des régle
+    int i = 0;
+    bool indice = false;
+    while (tableau_pas_plain(t, TAILLE) && i < TAILLE * TAILLE && indice == false) {
+        printf("%d // %d\n", indice, i);
+        indice = fin_tableau_joueur(t, TAILLE);
+        if (indice == false){
+            indice = double_triple_tableau_joueur(t, TAILLE);
+            if (indice == false){
+                indice = comparer_ligne_colone_joueur(t, TAILLE);
+            }
+        }
+        i++;
+    }
+    if (indice == false){
+        printf("il n'y a pas d'indice a donner vous pouver placer au hazard dans les case vide 0/1\n");
+    }
+}
+bool double_triple_tableau_joueur(int **t, int TAILLE){
+    for (int i = 0; i<TAILLE; i++) {
+        for (int j = 0; j < TAILLE; j++) {
+            // pour etre sur que toutes les valeux chercher et sesi existe
+            if (j+1<TAILLE){
+                //ligne 0110
+                if (t[i][j] == 1 && t[i][j+1] == 1){
+                    printf("Il y a une repetion de 1 dans la ligne %d, il faut donc plasser un 0 a droite ou a gauche\n" ,i);
+                    return true;
+                }
+
+                //ligne 1001
+                if (t[i][j] == 0 && t[i][j+1] == 0){
+                    printf("Il y a une repetion de 0 dans la ligne %d, il faut donc plasser un 1 a droite ou a gauche\n", i);
+                    return true;
+                }
+
+                //colone 0110
+                if (t[j][i] == 1 && t[j+1][i] == 1){
+                    printf("Il y a une repetion de 1 dans la colone %d, il faut donc plasser un 0 en haut ou en bas\n", i);
+                    return true;
+                }
+
+                //colone 1001
+                if (t[j][i] == 0 && t[j+1][i] == 0){
+                    printf("Il y a une repetion de 0 dans la colone %d, il faut donc plasser un 1 en haut ou en bas\n", i);
+                    return true;
+                }
+            }
+            if (j+2<TAILLE){
+                //ligne 101
+                if (t[i][j] == 1 && t[i][j+1] == -1 && t[i][j+2] == 1 && j+1 < TAILLE){
+                    printf("Il est impossible de placer trois 1 a la suite\n");
+                    printf("Regarder la ligne %d\n", i);
+                    return true;
+                }
+
+                //ligne 010
+                if (t[i][j] == 0 && t[i][j+1] == -1 && t[i][j+2] == 0 && j+1 < TAILLE){
+                    printf("Il est impossible de placer trois 0 a la suite\n");
+                    printf("Regarder la ligne %d\n", i);
+                    return true;
+                }
+
+                //colone 101
+                if (t[j][i] == 1 && t[j+1][i] == -1 && t[j+2][i] == 1 && j+1 < TAILLE){
+                    printf("Il est impossible de placer trois 1 a la suite\n");
+                    printf("Regarder la colone %d\n", i);
+                    return true;
+                }
+
+                //colone 010
+                if (t[j][i] == 0 && t[j+1][i] == -1 && t[j+2][i] == 0 && j+1 < TAILLE){
+                    printf("Il est impossible de placer trois 0 a la suite\n");
+                    printf("Regarder la colone %d\n", i);
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
+}
+bool fin_tableau_joueur(int **t, int TAILLE){
+    // on regarde si il y a 3 fois 0 / 1 si oui on coplaite la colone/ligne
+    for (int i = 0; i<TAILLE; i++){
+        // init des conteur : ligne 1 / ligne 0 // colone 1 / colone 0
+        int nomb_1_l = 0, nomb_0_l = 0, nomb_1_c = 0, nomb_0_c = 0;
+        // on regarde si il y a 3 fois 0 / 1
+        for (int j = 0; j<TAILLE; j++){
+            // on regarde pour les ligne
+            if (t[i][j] == 1){
+                nomb_1_l++;
+            } else{
+                if (t[i][j] == 0){
+                    nomb_0_l++;
+                }
+            }
+            // on regarde pour les colone
+            if (t[j][i] == 1){
+                nomb_1_c++;
+            } else{
+                if (t[j][i] == 0){
+                    nomb_0_c++;
+                }
+            }
+        }
+
+        // si oui on coplaite la ligne
+        if (nomb_1_l == TAILLE/2){
+            printf("Il n'y a plu de 1 a metre dans la ligne %d\n", i);
+            return true;
+        }
+        if (nomb_0_l == TAILLE/2){
+            printf("Il n'y a plu de 0 a metre dans la ligne %d\n", i);
+            return true;
+        }
+        // si oui on coplaite la ligne
+        if (nomb_1_c == TAILLE/2){
+            printf("Il n'y a plu de 1 a metre dans la colone %d\n", i);
+            return true;
+        }
+        if (nomb_0_c == TAILLE/2){
+            printf("Il n'y a plu de 0 a metre dans la colone %d\n", i);
+            return true;
+        }
+    }
+    return false;
+}
+bool comparer_ligne_colone_joueur(int **t, int TAILLE){
+    for (int i = 0; i<TAILLE-1; i++){
+        for (int j = i+1; j<TAILLE; j++){
+            // init des conteur :
+            // ligne 1 / ligne 0
+            int conte_l_0 = 0,conte_l_1 = 0;
+            // colone 1 / colone 0
+            int conte_c_0 = 0,conte_c_1 = 0;
+            // ligne -1 / colone -1
+            int conte_l_T = 0, conte_c_T = 0;
+
+            //ligne
+            for (int m = 0; m<TAILLE; m++){
+                if (t[i][m] == t[j][m] && t[i][m] == 1) {
+                    conte_l_1 ++;
+                }
+                if (t[i][m] == t[j][m] && t[i][m] == 0) {
+                    conte_l_0 ++;
+                }
+                if (t[i][m] == -1 || t[j][m] ==-1){
+                    conte_l_T ++;
+                }
+            }
+            if (conte_l_1 == TAILLE/2 -1 && conte_l_T == 2){
+                printf("Les lignes %d et  %d sont tres similaire\n", i, j);
+                return true;
+            }
+            if (conte_l_0 == TAILLE/2 -1 && conte_l_T == 2) {
+                printf("Les lignes %d et  %d sont tres similaire\n", i, j);
+                return true;
+            }
+
+            //colone
+            for (int k = 0; k<TAILLE; k++){
+                if (t[k][i] == t[k][j] && t[k][i] == 1) {
+                    conte_c_1 ++;
+                }
+                if (t[k][i] == t[k][j] && t[k][i] == 0) {
+                    conte_c_0 ++;
+                }
+                if (t[k][i] == -1 || t[k][j] ==-1){
+                    conte_c_T ++;
+                }
+            }
+            if (conte_c_1 == TAILLE/2 -1 && conte_c_T == 2){
+                printf("Les colones %d et  %d sont tres similaire\n", i, j);
+                return true;
+            }
+            if (conte_c_0 == TAILLE/2 -1 && conte_c_T == 2) {
+                printf("Les colones %d et  %d sont tres similaire\n", i, j);
+                return true;
+            }
+        }
+    }
+    return false;
+}
 
 //fonction utile :
 void afficher_tableau(int **t, int TAILLE){
