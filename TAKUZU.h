@@ -60,5 +60,6 @@ int remplire_au_hazard(int **t, int *tab, int pose, int TAILLE);
 //permet de remplacer une valeur mise au hazard (qui na pas fonctionner et remplacer par 0
 bool metre_a_zero(int **t, int val, int TAILLE);
 void boucle_zero(int **t, int *pose, int ***tab_t, int *tab_n, int TAILLE);
+// je sais pas
 
 #endif //TAKUZU_TAKUZU_H
