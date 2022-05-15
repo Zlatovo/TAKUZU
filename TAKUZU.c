@@ -4,9 +4,6 @@
 
 #include "TAKUZU.h"
 
-// ############################################################################################
-// Adrien
-
 // modif
 void saisir_valeurs_adrien(int **t, int *coup_du_jouer, int TAILLE){
     int val = 2, lig = -1, col = -1;
@@ -45,10 +42,6 @@ void regle_du_jeux(){
     printf("3. Il ne peut pas y avoir deux colonnes identiques dans une grille\n");
     printf("5. Dans une ligne ou une colonne, il ne peut y avoir plus de deux 0 ou deux 1 à la suite (on ne peut pas avoir trois 0 de suite ou trois 1 de suite)\n");
 }
-
-//
-// Created by Adrie on 26/04/2022.
-//
 
 // regle du jeux pour aider le jouer
 void tableau_regle_joueur(int **t, int TAILLE){

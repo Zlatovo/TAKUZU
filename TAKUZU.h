@@ -11,20 +11,6 @@
 #include <stdbool.h>
 #define TAILLEL 16
 
-
-
-//PARTIE_I
-
-//void creer_tableau_vierge(int *grille_jeu[TAILLEL][TAILLEL], int size);
-//void creer_tab_dyn(int** *matrice, int size);
-//void saisir_valeurs(int tab [TAILLEL][TAILLEL]);
-//PARTIE_II
-
-//PARTIE_III
-
-
-// Adrien
-
 // regle du jeux pour aider le jouer
 void tableau_regle_joueur(int **t, int TAILLE);
 bool double_triple_tableau_joueur(int **t, int TAILLE);
@@ -34,8 +20,6 @@ bool comparer_ligne_colone_joueur(int **t, int TAILLE);
 // modification sur ton project :
 void saisir_valeurs_adrien(int **t, int *coup_du_jouer, int TAILLE);
 void regle_du_jeux();
-
-
 
 //menu / jeux
 void star_game_Takuzu();
@@ -76,8 +60,5 @@ int remplire_au_hazard(int **t, int *tab, int pose, int TAILLE);
 //permet de remplacer une valeur mise au hazard (qui na pas fonctionner et remplacer par 0
 bool metre_a_zero(int **t, int val, int TAILLE);
 void boucle_zero(int **t, int *pose, int ***tab_t, int *tab_n, int TAILLE);
-
-
-
 
 #endif //TAKUZU_TAKUZU_H
