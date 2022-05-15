@@ -82,10 +82,6 @@ void star_game_Takuzu(){
     //}
 
 
-
-
-
-
     //au tour du joueur
     commencer_a_joux(t, matrice_complaite, TAILLE, &vie_du_joueur);
     if (vie_du_joueur == 0){
