@@ -7,15 +7,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include <unistd.h>
 #include <stdbool.h>
-#define TAILLEL 16
-
-// regle du jeux pour aider le jouer
-void tableau_regle_joueur(int **t, int TAILLE);
-bool double_triple_tableau_joueur(int **t, int TAILLE);
-bool fin_tableau_joueur(int **t, int TAILLE);
-bool comparer_ligne_colone_joueur(int **t, int TAILLE);
+#include <math.h>
+#define TAILLEL 6
 
 // modification sur ton project :
 void saisir_valeurs_adrien(int **t, int *coup_du_jouer, int TAILLE);
@@ -53,6 +47,7 @@ void tableau_regle(int **t, int TAILLE);
 void double_triple_tableau(int **t, int TAILLE);
 void fin_tableau(int **t, int TAILLE);
 void comparer_ligne_colone(int **t, int TAILLE);
+bool verif_ligne(int *t, int TAILLE);
 
 // pose 1 ou 0, si c'est possible, renvoi : 1 (remplie : 1/0), 0 (si deja complet), -1 (pas de sol)
 int remplire_au_hazard(int **t, int *tab, int pose, int TAILLE);
@@ -60,6 +55,8 @@ int remplire_au_hazard(int **t, int *tab, int pose, int TAILLE);
 //permet de remplacer une valeur mise au hazard (qui na pas fonctionner et remplacer par 0
 bool metre_a_zero(int **t, int val, int TAILLE);
 void boucle_zero(int **t, int *pose, int ***tab_t, int *tab_n, int TAILLE);
-// je sais pas
+
+//generation de lignes
+bool generer_lignes(int TAILLE);
 
 #endif //TAKUZU_TAKUZU_H
