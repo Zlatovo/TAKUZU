@@ -2,5 +2,5 @@
 
 int main() {
     //star_game_Takuzu();
-    generer_lignes(TAILLE);
+    generer_lignes(TAILLEL);
 }
