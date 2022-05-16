@@ -1,9 +1,10 @@
 //
-// Created by Adrien Pouyat on 12/05/2022.
+// Created by Adrien Pouyat and Luka Radovanovic on 12/05/2022.
+//Solveur automatique
 //
 #include "TAKUZU.h"
 
-bool recurence_cree_tableau_AI(int **t, int *pose, int ***tab_t, int *tab_n, int TAILLE){
+bool recurence_cree_tableau_AI(int **t, int *pose, int ***tab_t, int *tab_n, int TAILLE) {
     if (tab_n[1] == 36) {
         return true;
     } else {
@@ -29,7 +30,7 @@ bool recurence_cree_tableau_AI(int **t, int *pose, int ***tab_t, int *tab_n, int
                         int a = remplire_au_hazard(t, tab_n, *pose, TAILLE);
                         if (a == 1) {
                             //il n'y a pas d'ereur on rapele la fonction  et on passe a l'iteration suivente ppur pose
-                            *pose = *pose +1;
+                            *pose = *pose + 1;
                             return recurence_cree_tableau_AI(t, pose, tab_t, tab_n, TAILLE);
                         } else {
                             //si il est faut on recomence
@@ -45,27 +46,27 @@ bool recurence_cree_tableau_AI(int **t, int *pose, int ***tab_t, int *tab_n, int
     }
 }
 
-void trouver_tous_les_solution(int **t, int ***tab_parfait, int *ch, int TAILLE){
+void trouver_tous_les_solution(int **t, int ***tab_parfait, int *ch, int TAILLE) {
 
     bool valider_la_fin = false;
-    int pose = 0, ***tab_t,*tab_n;
+    int pose = 0, ***tab_t, *tab_n;
 
-    tab_n=(int*)malloc(TAILLE*TAILLE * sizeof(int*));
+    tab_n = (int *) malloc(TAILLE * TAILLE * sizeof(int *));
     // cree espase pour tab_t
-    tab_t = (int***)malloc(TAILLE*TAILLE * sizeof(int*));
-    for (int i = 0; i<TAILLE*TAILLE; i++){
-        tab_t[i] = (int**)malloc(TAILLE * sizeof(int*));
-        for (int j = 0; j<TAILLE; j++){
-            tab_t[i][j] = (int *) calloc ( TAILLE, sizeof(int));
+    tab_t = (int ***) malloc(TAILLE * TAILLE * sizeof(int *));
+    for (int i = 0; i < TAILLE * TAILLE; i++) {
+        tab_t[i] = (int **) malloc(TAILLE * sizeof(int *));
+        for (int j = 0; j < TAILLE; j++) {
+            tab_t[i][j] = (int *) calloc(TAILLE, sizeof(int));
         }
     }
 
-    for (int b = 0; b<TAILLE*TAILLE; b++){
+    for (int b = 0; b < TAILLE * TAILLE; b++) {
         tab_n[b] = 0;
     }
-    while (valider_la_fin == false){
+    while (valider_la_fin == false) {
         valider_la_fin = recurence_cree_tableau_AI(t, &pose, tab_t, tab_n, TAILLE);
-        if (valider_la_fin == false){
+        if (valider_la_fin == false) {
             bool passe = true;
             int q = 0;
             // on verifi si la solution donner n'existe pas deja / si le tableau a d'eja une solution
@@ -80,15 +81,15 @@ void trouver_tous_les_solution(int **t, int ***tab_parfait, int *ch, int TAILLE)
                 *ch = *ch + 1;
             }
             //on retourne au tableau pres remplie enregistrer en dernier dans tab_t
-            if (pose != 0){
+            if (pose != 0) {
                 pose--;
             }
             remplire_tableau_avec_tab(t, tab_t[pose], TAILLE);
 
         } else {
-            if (pose == 0 && tab_n[pose] == 0){
-                    remplire_tableau_avec_tab(tab_parfait[*ch], t, TAILLE);
-                    *ch = *ch + 1;
+            if (pose == 0 && tab_n[pose] == 0) {
+                remplire_tableau_avec_tab(tab_parfait[*ch], t, TAILLE);
+                *ch = *ch + 1;
             }
         }
     }
