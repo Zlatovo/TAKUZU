@@ -7,7 +7,7 @@
 
 void star_game_Takuzu(){
     // on inisialise tout les parametre d'on on aura besoin
-    int TAILLE = 16, **t, ch = 0, ***tab_parfait, dif = 0, largeur = 0, **matrice_complaite, **masque, vie_du_joueur = 2;
+    int TAILLE = 16, **t, ch = 0, ***tab_parfait, dif = 0, largeur = 0, **matrice_complaite, **masque, vie_du_joueur = 2, **matrice_jeu;
 
     // cree espase pour t
     t=(int**)malloc(TAILLE * sizeof(int*));
@@ -42,7 +42,9 @@ void star_game_Takuzu(){
     //commencement du jeux
     menu(&dif, &largeur);
     //creeation de la partie
-    //cree_la_matrise_plaine(matrice_complaite, largeur, TAILLE);
+    printf("\netape 1\n");
+    generer_grille(matrice_complaite, largeur);
+    printf("\netape 2\n");
     cree_le_masque(masque, matrice_complaite, dif, TAILLE);
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     int ex[TAILLEL][TAILLEL] = { {1,-1,-1,-1}, {-1,-1,1,-1}, {0,-1,1,0}, {-1,1,-1,-1} };
@@ -94,8 +96,8 @@ void menu(int *dif, int *largeur){
     char mot = 'o';
     // le menu demande :
     //si l'utilisateur veux voire les regle :
-    while (mot != 'y' && mot != 'n'){
-        printf("vouler vous lire les regle du jeux avant de commentcer y/n: ");
+    while (mot != 'y' && mot != 'n') {
+        printf("Voulez vous lire les regles du jeu avant de commencer y/n: ");
         scanf("%c", &mot);
         printf("\n");
     }
@@ -104,11 +106,11 @@ void menu(int *dif, int *largeur){
         printf("\n\n\n");
     }
     //le niveux et la taille de la grille
-    printf("Indiquez la dificulter et la taille de la grille\n");
+    printf("Indiquez la difficulte et la taille de la grille\n");
     while (*dif < 1 || *dif > 4 || (*largeur != 4 && *largeur != 6 && *largeur != 8 && *largeur != 16)){
-        printf("la dificulter doit etre entre 1 et 4 : ");
+        printf("La difficulte doit etre comprise entre 1 et 4 : ");
         scanf("%d", dif);
-        printf("la taille doit etre 4/6/8/16 : ");
+        printf("La taille doit etre 4/6/8/16 : ");
         scanf("%d", largeur);
     }
 }

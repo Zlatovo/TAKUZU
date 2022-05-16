@@ -1,9 +1,10 @@
 #include "TAKUZU.h"
 
 int main() {
+    srand(time(NULL));
     bool star = true;
     char commentcer = 'a';
-    printf("Bienvenu au jeux TAKUZU progrmer par Adrien et Luka\n");
+    printf("Bienvenue au jeu TAKUZU programme par Adrien et Luka\n");
     while (star == true){
         //si l'utilisateur veux commencer a jouer :
         while (commentcer != 'y' && commentcer != 'n'){

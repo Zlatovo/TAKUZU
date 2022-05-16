@@ -11,8 +11,7 @@
 #include <stdbool.h>
 #include <math.h>
 #define TAILLEL 6
-#include <math.h>
-#define TAILLEL 6
+
 
 // regle du jeux pour aider le jouer
 void tableau_regle_joueur(int **t, int TAILLE);
@@ -66,6 +65,7 @@ bool metre_a_zero(int **t, int val, int TAILLE);
 void boucle_zero(int **t, int *pose, int ***tab_t, int *tab_n, int TAILLE);
 
 //generation de lignes
-bool generer_lignes(int TAILLE);
+int generer_lignes(int** line, int TAILLE);
+void generer_grille(int **t, int TAILLE);
 
 #endif //TAKUZU_TAKUZU_H
