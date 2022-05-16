@@ -18,6 +18,8 @@ int main() {
         } else {
             star = false;
         }
+        commentcer = 'a';
     }
     printf("Merci d'avoir jouer a notre jeux.\n");
+
 }

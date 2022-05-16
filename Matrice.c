@@ -7,7 +7,6 @@ bool recurence_cree_tableau_AI(int **t, int *pose, int ***tab_t, int *tab_n, int
     if (tab_n[1] == 36) {
         return true;
     } else {
-
         //utiliser les regle du TAKUZU pour remplire au maximum le tableau
         tableau_regle(t, TAILLE);
         if (false == tableau_pas_plain(t, TAILLE) && true == valider_un_tableau(t, TAILLE) && *pose == 0) {
@@ -47,6 +46,7 @@ bool recurence_cree_tableau_AI(int **t, int *pose, int ***tab_t, int *tab_n, int
 }
 
 void trouver_tous_les_solution(int **t, int ***tab_parfait, int *ch, int TAILLE){
+
     bool valider_la_fin = false;
     int pose = 0, ***tab_t,*tab_n;
 
@@ -63,13 +63,11 @@ void trouver_tous_les_solution(int **t, int ***tab_parfait, int *ch, int TAILLE)
     for (int b = 0; b<TAILLE*TAILLE; b++){
         tab_n[b] = 0;
     }
-
     while (valider_la_fin == false){
         valider_la_fin = recurence_cree_tableau_AI(t, &pose, tab_t, tab_n, TAILLE);
         if (valider_la_fin == false){
             bool passe = true;
             int q = 0;
-
             // on verifi si la solution donner n'existe pas deja / si le tableau a d'eja une solution
             while (q < *ch && passe == true && *ch != 0) {
                 passe = comparer_tableau(tab_parfait[*ch - 1], t, TAILLE);

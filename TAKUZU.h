@@ -10,7 +10,6 @@
 #include <unistd.h>
 #include <stdbool.h>
 #include <math.h>
-#define TAILLEL 6
 
 
 // regle du jeux pour aider le jouer
@@ -28,15 +27,15 @@ void star_game_Takuzu();
 void menu(int *dif, int *largeur);
 void cree_la_matrise_plaine(int **matrice_complaite, int largeur, int TAILLE);
 void cree_le_masque(int **masque, int **matrice_complaite, int dif, int TAILLE);
-void commencer_a_joux(int **t, int **matrice_complaite, int TAILLE, int *vie_du_joueur);
-void game_over(int ***tab_parfait, int ch, int **masque, int TAILLE);
+void commencer_a_joux(int **t, int **matrice_complaite, int TAILLE, int *vie_du_joueur, int **masque);
+void game_over(int ***tab_parfait, int ch, int **masque, int TAILLE, int**matrice_complaite);
 
 //matrice
 bool recurence_cree_tableau_AI(int **t, int *pose, int ***tab_t, int *tab_n, int TAILLE);
 void trouver_tous_les_solution(int **t, int ***tab_parfait, int *ch, int TAILLE);
 
 //fonction utile :
-void afficher_tableau(int **t, int TAILLE);
+void afficher_tableau(int **masque, int **matrice_complaite, int TAILLE);
 void remplire_tableau_avec_tab(int **t1, int **t2, int TAILLE);
 bool tableau_pas_plain(int **t, int TAILLE);
 bool comparer_tableau(int **t1, int **t2, int TAILLE);

@@ -18,7 +18,7 @@ void saisir_valeurs_adrien(int **t, int *coup_du_jouer, int TAILLE) {
     // on demande la ligne et la colone
     printf("Indiquez la ligne puis la colonne de la valeur a ajouter :\n");
     while (lig > TAILLE || lig < 0 && col > TAILLE || col < 0 || libre == false) {
-        printf("Les valeurs doivent etre entre 0 et %d (x;y): ", TAILLE);
+        printf("Les valeurs doivent etre entre 1 et %d (ligne puis colonne): ", TAILLE);
         scanf("%d %d", &lig, &col);
         if (t[lig][col] == -1) {
             libre = true;
@@ -30,8 +30,8 @@ void saisir_valeurs_adrien(int **t, int *coup_du_jouer, int TAILLE) {
 
     // on ajoute les donner dans la liste
     coup_du_jouer[0] = val;
-    coup_du_jouer[1] = lig;
-    coup_du_jouer[2] = col;
+    coup_du_jouer[1] = lig - 1;
+    coup_du_jouer[2] = col - 1;
 }
 
 void regle_du_jeux() {
@@ -236,9 +236,8 @@ bool comparer_ligne_colone_joueur(int **t, int TAILLE){
 }
 
 //fonction utile :
-void afficher_tableau(int **t, int TAILLE) {
-    printf("_")*TAILLE;
-    for (int i = 0; i < TAILLE; i++) {
+void afficher_tableau(int **masque, int **matrice_complaite, int TAILLE) {
+    /*for (int i = 0; i < TAILLE; i++) {
         for (int j = 0; j < TAILLE; j++) {
             if (t[i][j] == -1) {
                 printf(" ");
@@ -246,6 +245,36 @@ void afficher_tableau(int **t, int TAILLE) {
                 printf("%d ", t[i][j]);
             }
         }
+        printf("\n");
+    }*/
+    printf("\n     ");
+    for (int i = 0; i < TAILLE; ++i)
+        printf("%d  ", i+1);
+
+    printf("\n    ");
+
+    for (int i = 0; i < TAILLE; ++i)
+        printf("___");
+
+    printf("\n");
+
+    for (int i = 0; i < TAILLE; ++i) {
+        printf("%d ", i+1);
+        if (i<9)
+            printf(" ");
+
+        printf("| ");
+
+        for (int j = 0; j < TAILLE; ++j) {
+            if (masque[i][j])
+                printf(".  ");
+            else if (matrice_complaite[i][j])
+                printf("1  ");
+            else
+                printf("0  ");
+        }
+
+
         printf("\n");
     }
 }
@@ -293,7 +322,7 @@ bool valider_un_tableau(int **t, int TAILLE) {
     //verifie que il n'y a pas trois fois le meme chifre et N0 = N1 = TAILLE/2
     for (int l = 0; l < TAILLE; l++) {
         for (int c = 0; c < TAILLE; c++) {
-            int conte_l_1 = 0,conte_l_0 = 0, conte_c_0 = 0,conte_c_1 = 1, con_c = 0, con_l = 0, val_l = t[l][0], val_c = t[0][c];
+            int conte_l_1 = 0, conte_l_0 = 0, conte_c_0 = 0, conte_c_1 = 0, con_c = 0, con_l = 0, val_l = t[l][0], val_c = t[0][c];
             for (int i = 0; i < TAILLE; i++) {
                 //ligne
                 if (t[l][i] == 1) {
@@ -741,7 +770,7 @@ bool metre_a_zero(int **t, int val, int TAILLE) {
     x = val / TAILLE;
     y = val - (x * TAILLE);
     t[x][y] = 0;
-    return valider_un_coup(t, x, y, TAILLE);
+    return valider_un_tableau(t, TAILLE);
 }
 
 void boucle_zero(int **t, int *pose, int ***tab_t, int *tab_n, int TAILLE) {
@@ -790,17 +819,6 @@ int generer_lignes(int** line, int TAILLE) {
                 line[cptr][k] = tab_sel[k];
             }
             cptr += 1;
-            printf("\nLe nombre binaire est = ");
-
-            for (i = 0; i < TAILLE; i++) {
-                printf("%d", tab_sel[i]);
-            }
-        }
-    }
-    for (int i = 0; i < cptr; ++i) {
-        printf("\n");
-        for (int j = 0; j < TAILLE; ++j) {
-            printf("%d", line[i][j]);
         }
     }
     return cptr;
@@ -816,19 +834,13 @@ void generer_grille(int **t, int TAILLE) {
     }
 
     int cptr = generer_lignes(line, TAILLE);
+
     while (valider_un_tableau(t, TAILLE) == false) {
         for (int i = 0; i < TAILLE; ++i) {
             for (int j = 0; j < TAILLE; ++j) {
                 line_nb = rand() % cptr;
                 t[i][j] = line[line_nb][j];
             }
-        }
-    }
-    printf("\n\n%d\n\n", valider_un_tableau(t, TAILLE));
-    for (int i = 0; i < TAILLE; ++i) {
-        printf("\n");
-        for (int j = 0; j < TAILLE; ++j) {
-            printf("%d", t[i][j]);
         }
     }
 }

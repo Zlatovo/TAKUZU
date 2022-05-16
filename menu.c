@@ -7,7 +7,7 @@
 
 void star_game_Takuzu(){
     // on inisialise tout les parametre d'on on aura besoin
-    int TAILLE = 16, **t, ch = 0, ***tab_parfait, dif = 0, largeur = 0, **matrice_complaite, **masque, vie_du_joueur = 2, **matrice_jeu;
+    int TAILLE, **t, ch = 0, ***tab_parfait, dif = 0, **matrice_complaite, **masque, vie_du_joueur = 2;
 
     // cree espase pour t
     t=(int**)malloc(TAILLE * sizeof(int*));
@@ -40,24 +40,10 @@ void star_game_Takuzu(){
     }
 
     //commencement du jeux
-    menu(&dif, &largeur);
+    menu(&dif, &TAILLE);
     //creeation de la partie
-    printf("\netape 1\n");
-    generer_grille(matrice_complaite, largeur);
-    printf("\netape 2\n");
+    generer_grille(matrice_complaite, TAILLE);
     cree_le_masque(masque, matrice_complaite, dif, TAILLE);
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    int ex[TAILLEL][TAILLEL] = { {1,-1,-1,-1}, {-1,-1,1,-1}, {0,-1,1,0}, {-1,1,-1,-1} };
-    //int ex[TAILLEL][TAILLEL] = { {0,0,-1,0,-1,-1}, {-1,0,-1,-1,-1,0}, {-1,-1,-1,1,-1,-1}, {1,-1,0,-1,-1,-1}, {-1,-1,-1,-1,-1,1}, {-1,-1,-1,-1,1,-1}};
-    //int ex[TAILLEL][TAILLEL] = {{0,-1,-1,0,-1,-1,0,-1},{-1,-1,-1,-1,1,-1,-1,1},{-1,-1,-1,0,-1,-1,-1,-1},{-1,-1,-1,-1,0,-1,-1,0},{-1,-1,-1,-1,-1,1,-1,-1},{-1,-1,-1,-1,-1,-1,-1,-1},{0,-1,-1,0,-1,-1,-1,-1},{0,-1,-1,-1,-1,0,0,-1}};
-    //int ex[TAILLEL][TAILLEL] = {{-1, -1, -1, 0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},{-1, 1, 1, -1, -1, 1, -1, -1, 1, -1, -1, -1, -1, 1, -1, -1},{-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 0, -1, -1, -1, 0},{-1, 1, -1, -1, -1, -1, -1, 1, 1, -1, 1, -1, -1, 1, 1, -1},{-1, -1, -1, -1, -1, 1, -1, -1, -1, -1, -1, 1, -1, -1, -1, -1},{-1, -1, -1, 1, -1, 1, -1, -1, -1, -1, 0, -1, -1, -1, -1, -1},{-1, -1, -1, -1, 0, -1, -1, -1, -1, -1, -1, -1, 1, -1, 1, -1},{-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 0, -1, -1, 1, -1},{1, -1, 1, -1, -1, -1, -1, -1, 1, -1, -1, 0, -1, -1, -1, -1},{1, -1, -1, -1, -1, 1, 1, -1, -1, -1, 1, -1, -1, -1, 1, -1},{-1, -1, -1, -1, -1, -1, 1, -1, -1, -1, -1, -1, -1, 0, -1, -1},{-1, -1, -1, -1, 0, -1, -1, -1, -1, -1, 0, -1, -1, -1, -1, 1},{-1, -1, -1, -1, -1, -1, -1, -1, -1, 0, 0, -1, -1, -1, -1, 1},{-1, -1, -1, 0, 0, -1, -1, -1, 0, -1, -1, 1, -1, -1, -1, -1},{-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 0, -1, -1},{-1, 0, 0, -1, -1, -1, 1, 1, -1, -1, -1, 1, -1, 0, 0, -1}};
-    //remplire t avec exemple
-    for (int i = 0; i<TAILLE; i++){
-        for (int j = 0; j<TAILLE; j++){
-            masque[i][j] = ex[i][j];
-        }
-    }
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     //remplire t avec le masque
     remplire_tableau_avec_tab(t, masque, TAILLE);
@@ -86,9 +72,9 @@ void star_game_Takuzu(){
 
 
     //au tour du joueur
-    commencer_a_joux(t, matrice_complaite, TAILLE, &vie_du_joueur);
+    commencer_a_joux(t, matrice_complaite, TAILLE, &vie_du_joueur, masque);
     if (vie_du_joueur == 0){
-        game_over(tab_parfait, ch, masque, TAILLE);
+        game_over(tab_parfait, ch, masque, TAILLE, matrice_complaite);
     }
 }
 
@@ -108,18 +94,18 @@ void menu(int *dif, int *largeur){
     //le niveux et la taille de la grille
     printf("Indiquez la difficulte et la taille de la grille\n");
     while (*dif < 1 || *dif > 4 || (*largeur != 4 && *largeur != 6 && *largeur != 8 && *largeur != 16)){
-        printf("La difficulte doit etre comprise entre 1 et 4 : ");
+        printf("La difficulte doit etre comprise entre 1 et 3 : ");
         scanf("%d", dif);
         printf("La taille doit etre 4/6/8/16 : ");
         scanf("%d", largeur);
     }
 }
 
-void commencer_a_joux(int **t, int **matrice_complaite, int TAILLE, int *vie_du_joueur){
+void commencer_a_joux(int **t, int **matrice_complaite, int TAILLE, int *vie_du_joueur, int **masque){
     //on commentce par cree une liste dans la quel on ecrie se que le jouer veux
     int *coup_du_jouer;
     coup_du_jouer=(int*)malloc(3 * sizeof(int*));
-    afficher_tableau(t, TAILLE);
+    afficher_tableau(masque, matrice_complaite, TAILLE);
     // tant que le tableau n'est pas completer ou que le joueur est mort on continue
     while (tableau_pas_plain(t, TAILLE) && *vie_du_joueur != 0) {
         bool passer = false;
@@ -135,25 +121,26 @@ void commencer_a_joux(int **t, int **matrice_complaite, int TAILLE, int *vie_du_
                 *vie_du_joueur = *vie_du_joueur - 1;
                 t[coup_du_jouer[1]][coup_du_jouer[2]] = -1;
                 printf("Il ne vous reste plus que %d vie\n", *vie_du_joueur + 1);
+                sleep(4);
             } else {
                 if (matrice_complaite[coup_du_jouer[1]][coup_du_jouer[2]] != coup_du_jouer[0]){
                     printf("Coup valide mais incorrect !\n");
                     printf("Il respecte les regle mais n'est pas celui attendu.\n");
                     printf("Vous avez toujours %d vie\n", *vie_du_joueur + 1);
                     t[coup_du_jouer[1]][coup_du_jouer[2]] = -1;
+                    sleep(3);
                 }
             }
-            sleep(4);
-            afficher_tableau(t, TAILLE);
+            afficher_tableau(masque, matrice_complaite, TAILLE);
         }
     }
 }
 
-void game_over(int ***tab_parfait, int ch, int **masque, int TAILLE){
+void game_over(int ***tab_parfait, int ch, int **masque, int TAILLE, int**matrice_complaite){
     char mot = 'o';
     printf("vous n'aver pas reussi, car vous aver commi 3 erreur\n");
     printf("le tableau de base etait : \n");
-    afficher_tableau(masque, TAILLE);
+    afficher_tableau(masque, matrice_complaite, TAILLE);
     while (mot != 'y' && mot != 'n'){
         printf("vouller vous voire la solution y/n : ");
         scanf("%c", &mot);
@@ -161,7 +148,7 @@ void game_over(int ***tab_parfait, int ch, int **masque, int TAILLE){
     if (mot == 'y'){
         printf("la/les solution(s) est/sont :\n\n");
         for (int i = 0; i <ch; i++){
-            afficher_tableau(tab_parfait[i], TAILLE);
+            afficher_tableau(masque, tab_parfait[i], TAILLE);
             printf("\n");
         }
     }
@@ -174,7 +161,17 @@ void cree_le_masque(int **masque, int **matrice_complaite, int dif, int TAILLE){
             masque[i][j] = -1;
         }
     }
-    int repeter = dif * (TAILLE/100) * 10;
+    int repeter;
+    if (TAILLE == 4){
+        repeter = (4 - dif) * (TAILLE/2);
+    } else {
+        if (TAILLE == 6){
+            repeter = (4 - dif) * (TAILLE);
+        } else {
+            repeter = (9 - dif) * (TAILLE);
+        }
+    }
+
     // on prend au hazard des chifre de la matrice_complaite
     while (repeter != 0){
         int i = rand()%TAILLE, j = rand()%TAILLE;
