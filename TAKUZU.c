@@ -31,8 +31,8 @@ void saisir_valeurs_adrien(int **t, int *coup_du_jouer, int TAILLE) {
 
     // on ajoute les donner dans la liste
     coup_du_jouer[0] = val;
-    coup_du_jouer[1] = lig;
-    coup_du_jouer[2] = col;
+    coup_du_jouer[1] = (lig -1 );
+    coup_du_jouer[2] = (col -1 );
 }
 
 void regle_du_jeux() {
@@ -248,7 +248,7 @@ void afficher_tableau(int **t, int TAILLE) {
 
     printf("\n     ");
     for (int i = 0; i < TAILLE; ++i)
-        printf("%d  ", i);
+        printf("%d  ", i+1);
 
     printf("\n    ");
 
@@ -258,7 +258,7 @@ void afficher_tableau(int **t, int TAILLE) {
     printf("\n");
 
     for (int i = 0; i < TAILLE; ++i) {
-        printf("%d ", i);
+        printf("%d ", i+1);
         if (i < 9)
             printf(" ");
 
@@ -824,7 +824,6 @@ int generer_lignes(int **line, int TAILLE) {
 
 void generer_grille(int **t, int TAILLE) {
 
-    srand(time(NULL));
     //permet de générer une grille de manière aléatoire
     int **line;
     int line_nb;

@@ -129,7 +129,7 @@ void commencer_a_joux(int **t, int **matrice_complaite, int TAILLE, int *vie_du_
                     sleep(3);
                 }
             }
-            afficher_tableau(masque, TAILLE);
+            afficher_tableau(t, TAILLE);
         }
     }
 }
@@ -151,5 +151,3 @@ void game_over(int ***tab_parfait, int ch, int **masque, int TAILLE) {
         }
     }
 }
-
-

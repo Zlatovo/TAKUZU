@@ -1,6 +1,7 @@
 #include "TAKUZU.h"
 
 int main() {
+    srand(time(NULL));
     bool star = true;
     char commentcer = 'a';
     printf("Bienvenue au jeu TAKUZU programme par Adrien et Luka\n");
